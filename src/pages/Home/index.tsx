@@ -47,15 +47,6 @@ export const Home = () => {
 
     return (
         <div className="w-full h-full">
-            <AddGitRepositoryModal
-                open={openModal}
-                setOpen={setOpenModal}
-                text={""}
-                icon={<PlusIcon className="h-6" />}
-                buttonClassname={"bg-blue-500 rounded-full fixed w-11 h-11 rounded-full right-2 bottom-16 flex flex-row justify-center items-center text-white font-bold text-md shadow hover:shadow-lg outline-none focus:outline-none"}
-                gitRepositories={gitRepositoriesFiltered}
-                setGitRepositories={setGitRepositoriesFiltered}
-            />
             <div className="w-full h-1/6 flex items-center justify-center">
                 <div className="w-full h-full">
                     <FilterGitRepositoriesForm
@@ -64,17 +55,26 @@ export const Home = () => {
                     />
                 </div>
             </div>
-            <div className="w-full h-5/6 px-4 py-2">
+            <div className="w-full h-5/6 px-4 py-2 overflow-y-scroll overflow-x-hidden">
                 {gitRepositoriesFiltered.length === 0 &&
-                    <div className="w-full h-full flex flex-col justify-start items-center">
+                    <div className="w-full h-full flex flex-col justify-start items-center mt-5">
                         <ArchiveBoxXMarkIcon className="h-40 mt-6 text-red-800 dark:text-red-500" />
-                        <span className="text-2xl font-bold text-slate-800 mt-5 dark:text-white">No pudimos encontrar el repositorio que buscas</span>
+                        <span className="text-2xl font-bold text-slate-800 mt-2 dark:text-white">No pudimos encontrar el repositorio que buscas</span>
                     </div>
                 }
-                <div className="h-full grid grid-cols-3 overflow-auto grid-flow-row gap-6">
+                <div className="h-full grid grid-cols-3 grid-row gap-6 gap-y-4">
                     {gitRepositoriesFiltered.map((repo, index) => <GitRepositoryCards key={index} repository={repo} />)}
                 </div>
             </div>
+            <AddGitRepositoryModal
+                open={openModal}
+                setOpen={setOpenModal}
+                text={""}
+                icon={<PlusIcon className="h-6" />}
+                buttonClassname={"bg-blue-500 rounded-full fixed w-11 h-11 rounded-full right-2 bottom-16 flex flex-row justify-center items-center text-white font-bold text-md shadow hover:shadow-lg outline-none focus:outline-none"}
+                gitRepositories={gitRepositoriesFiltered}
+                setGitRepositories={setGitRepositoriesFiltered}
+            /> 
         </div>
     )
 }
