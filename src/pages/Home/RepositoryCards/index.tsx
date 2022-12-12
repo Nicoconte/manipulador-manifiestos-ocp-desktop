@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react"
 import { GitRepository } from "../../../data/interfaces/gitRepository.interface"
 
-import { GlobeAltIcon, ArrowDownTrayIcon, ExclamationTriangleIcon } from "@heroicons/react/24/outline"
+import { GlobeAltIcon, ArrowDownTrayIcon, ExclamationTriangleIcon, CheckBadgeIcon } from "@heroicons/react/24/outline"
 
 import { useNavigate } from "react-router-dom"
 import { useGitCommand } from "../../../hooks/useGitCommands"
@@ -101,7 +101,8 @@ export const GitRepositoryCards = ({ repository }: GitRepositoryCardsProps) => {
                         </button>
                     </div>
                     <div className="w-2/12 flex justify-start items-center">
-                        {!hasLocalRepository && <ExclamationTriangleIcon className="h-8 mt-3 text-yellow-600 dark:text-yellow-300" /> }
+                        {!hasLocalRepository && <ExclamationTriangleIcon className="h-8 mt-4 cursor-pointer text-yellow-600 dark:text-yellow-300" title="Debe clonar este repositorio" />}
+                        {hasLocalRepository && <CheckBadgeIcon className="h-8 mt-4 cursor-pointer text-sky-400 dark:text-sky-300" title="No se detectaron problemas con este repositorio" />}
                     </div>
                 </div>
             </div>
