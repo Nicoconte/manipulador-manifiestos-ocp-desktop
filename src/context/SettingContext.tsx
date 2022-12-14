@@ -1,27 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { SettingService } from "../api/services/setting.service";
-import { Setting } from "../data/interfaces/setting.interface";
+import { GlobalSetting } from "../data/interfaces/setting.interface";
 
 export type SettingContextType = {
-    loadSettings: () => void,
-    setting: Setting | null
+    loadGlobalSettings: () => void,
+    globalSetting: GlobalSetting | null
 }
 
 const SettingContext = React.createContext<SettingContextType | null>(null);
 
 const SettingProvider: React.FC<React.ReactNode> = ({ children }) => {
-    const [setting, setSetting] = React.useState<Setting | null>(null);
+    const [setting, setSetting] = React.useState<GlobalSetting | null>(null);
 
-    const loadSettings = () => {
-        SettingService.get().then(set => {
+    const loadGlobalSettings = () => {
+        SettingService.getGlobalSetting().then(set => {
             setSetting(set);
         })
     }
 
     return (
         <SettingContext.Provider value={{
-            loadSettings,
-            setting
+            loadGlobalSettings: loadGlobalSettings,
+            globalSetting: setting
         }}>
             {children}
         </SettingContext.Provider>

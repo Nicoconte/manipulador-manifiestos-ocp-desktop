@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { SettingService } from "../api/services/setting.service";
-import { Setting } from "../data/interfaces/setting.interface";
+import { GlobalSetting } from "../data/interfaces/setting.interface";
 
 type useThemeTogglerResponse = {
     loadTheme: () => void,
@@ -10,11 +10,9 @@ type useThemeTogglerResponse = {
 
 export const useThemeToggler = () => {
     const [theme, setTheme] = useState<string>("");
-    const [setting, setSetting] = useState<Setting | null>(null);
 
     useEffect(() => {
-        SettingService.get().then(sett => {
-            setSetting(sett);
+        SettingService.getGlobalSetting().then(sett => {
             setTheme(sett.theme);
         })
      }, [])

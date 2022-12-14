@@ -21,7 +21,7 @@ type GitRepositoryCardsProps = {
 }
 
 export const GitRepositoryCards = ({ repository }: GitRepositoryCardsProps) => {
-    const { setting } = useContext(SettingContext) as SettingContextType;
+    const { globalSetting } = useContext(SettingContext) as SettingContextType;
     const { setIsLoading } = useContext(GlobalContext) as GlobalContextType;
 
     const [hasLocalRepository, setHasLocalRepository] = useState<boolean>(false);
@@ -33,7 +33,7 @@ export const GitRepositoryCards = ({ repository }: GitRepositoryCardsProps) => {
 
     useEffect(() => {
         fs(FileSystemOperation.pathExist, {
-            path: setting?.local_path_to_repositories.concat("/", repository.name)
+            path: globalSetting?.local_path_to_repositories.concat("/", repository.name)
         } as FileSystemArgs).then(res => {
             setHasLocalRepository(res.response)
         })
@@ -43,7 +43,7 @@ export const GitRepositoryCards = ({ repository }: GitRepositoryCardsProps) => {
         setIsLoading(true);
 
         let pathOptions = {
-            path: setting?.local_path_to_repositories.concat("/", repository.name)
+            path: globalSetting?.local_path_to_repositories.concat("/", repository.name)
         } as FileSystemArgs;
 
         let pathExistResponse = await fs(FileSystemOperation.pathExist, pathOptions);
@@ -69,7 +69,7 @@ export const GitRepositoryCards = ({ repository }: GitRepositoryCardsProps) => {
         setIsLoading(true);
 
         git(GitOperation.Clone, {
-            localPath: setting!.local_path_to_repositories.concat("/", repository.name),
+            localPath: globalSetting!.local_path_to_repositories.concat("/", repository.name),
             githubUrl: repository.github_url
         } as GitCommandArgs).then(res => {
             ToastWrapper.git(res);

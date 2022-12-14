@@ -12,7 +12,7 @@ export const useGitRepository = () : useGitRepositoryResponse => {
     const [localRepository, setLocalRepository] = useState<GitRepository | null>(null);
 
     useEffect(() => {
-        SettingService.get().then(setting => {
+        SettingService.getGlobalSetting().then(setting => {
             let repositoryName = localStorage.getItem("current_repo");
 
             if (!repositoryName) {

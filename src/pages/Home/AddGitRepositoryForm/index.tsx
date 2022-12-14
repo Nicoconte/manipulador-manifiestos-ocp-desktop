@@ -24,7 +24,7 @@ export const AddGitRepositoryForm = ({ setOpenModal, gitRepositories, setGitRepo
     const [githubUrl, setGithubUrl] = useState<string>("")
 
     const { isLoading, setIsLoading } = useContext(GlobalContext) as GlobalContextType;
-    const { setting } = useContext(SettingContext) as SettingContextType;
+    const { globalSetting } = useContext(SettingContext) as SettingContextType;
 
     const handleSubmit = async () => {
         if (!githubUrl || githubUrl === "") {
@@ -57,7 +57,7 @@ export const AddGitRepositoryForm = ({ setOpenModal, gitRepositories, setGitRepo
             setGitRepositories(currRepositories);
 
             git(GitOperation.Clone, {
-                localPath: setting!.local_path_to_repositories.concat("/", repo.name),
+                localPath: globalSetting!.local_path_to_repositories.concat("/", repo.name),
                 githubUrl: githubUrl
             } as GitCommandArgs).then(res => {
                 ToastWrapper.git(res);

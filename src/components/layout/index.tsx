@@ -10,10 +10,10 @@ type MainLayoutProps = {
 }
 
 export const MainLayout = ({ children }: MainLayoutProps) => {
-    const { loadSettings, setting } = useContext(SettingContext) as SettingContextType;
+    const { loadGlobalSettings, globalSetting: setting } = useContext(SettingContext) as SettingContextType;
 
     useEffect(() => {
-        loadSettings();
+        loadGlobalSettings();
     }, [setting]);
 
     return (
