@@ -1,5 +1,5 @@
 export enum PocketbaseCollections {
     GitRepositories = "git_repositories",
     Projects = "projects",
-    Settings = "settings"   
+    GlobalSettings = "global_settings"   
 }
