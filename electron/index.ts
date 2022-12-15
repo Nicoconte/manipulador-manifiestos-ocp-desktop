@@ -11,7 +11,7 @@ import { GitCommandArgs, executeGitCommand, GitOperation } from './helpers/gitco
 import { executeFileSystem, FileSystemArgs } from './helpers/filesystem.helper';
 
 const height = 700;
-const width = 1024;
+const width = 1080;
 
 function servePocketbase() {
   ExecuteCommand("cd ./backend & pocketbase serve", "./", (stdout: any) => {
@@ -27,7 +27,7 @@ function createWindow() {
     //  change to false to use AppBar
     autoHideMenuBar: true,
     show: true,
-    resizable: true,
+    resizable: false,
     fullscreenable: true,
     webPreferences: {
       preload: join(__dirname, 'preload.js')

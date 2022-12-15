@@ -5,11 +5,11 @@ import { SettingService } from "../api/services/setting.service";
 import { GitRepository } from "../data/interfaces/gitRepository.interface";
 
 type useGitRepositoryResponse = {
-    localRepository: GitRepository | null
+    repository: GitRepository | null
 }
 
 export const useGitRepository = () : useGitRepositoryResponse => {
-    const [localRepository, setLocalRepository] = useState<GitRepository | null>(null);
+    const [repository, setRepository] = useState<GitRepository | null>(null);
 
     useEffect(() => {
         SettingService.getGlobalSetting().then(setting => {
@@ -21,12 +21,12 @@ export const useGitRepository = () : useGitRepositoryResponse => {
 
             GitRepositoryService.getByName(repositoryName).then(repo => {
                 repo!.fullPath = setting.local_path_to_repositories.concat("/", repo!.name)                
-                setLocalRepository(repo);
+                setRepository(repo);
             })
         })
-    }, [localRepository]);
+    }, []);
 
     return {
-        localRepository
+        repository
     } as useGitRepositoryResponse
 }

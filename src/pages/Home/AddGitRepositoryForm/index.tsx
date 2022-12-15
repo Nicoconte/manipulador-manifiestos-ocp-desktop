@@ -23,7 +23,7 @@ export const AddGitRepositoryForm = ({ setOpenModal, gitRepositories, setGitRepo
     const { git } = useGitCommand();
     const [githubUrl, setGithubUrl] = useState<string>("")
 
-    const { isLoading, setIsLoading } = useContext(GlobalContext) as GlobalContextType;
+    const { setIsLoading } = useContext(GlobalContext) as GlobalContextType;
     const { globalSetting } = useContext(SettingContext) as SettingContextType;
 
     const handleSubmit = async () => {
@@ -76,20 +76,22 @@ export const AddGitRepositoryForm = ({ setOpenModal, gitRepositories, setGitRepo
     }
 
     return (
-        <div className="w-full h-full flex flex-col items-start justify-center">
-            <input type="text"
-                placeholder="Url github. Ej: https://github.com/usted/turepo" 
-                className="w-full h-12 px-3 mt-3 rounded dark:bg-cyan-900 dark:text-white dark:placeholder-slate-100 shadow-md"
-                onChange={(e) => onInputChange(e.target.value)}
-                value={githubUrl}
-            />
-            <button
-                className="bg-blue-500 hover:bg-blue-700 w-full h-12 flex flex-row justify-center items-center rounded text-white font-bold text-sm shadow hover:shadow-lg outline-none focus:outline-none mt-5"
-                type="button"
-                onClick={handleSubmit}
-            >
-                <PlusIcon className="h-7 mr-2" /> Agregar
-            </button>          
+        <div className="relative h-60 p-6 flex-auto">
+            <div className="w-full h-full flex flex-col items-start justify-center">
+                <input type="text"
+                    placeholder="Url github. Ej: https://github.com/usted/turepo" 
+                    className="w-full h-12 px-3 mt-3 rounded dark:bg-cyan-900 dark:text-white dark:placeholder-slate-100 shadow-md"
+                    onChange={(e) => onInputChange(e.target.value)}
+                    value={githubUrl}
+                />
+                <button
+                    className="bg-blue-500 hover:bg-blue-700 w-full h-12 flex flex-row justify-center items-center rounded text-white font-bold text-sm shadow hover:shadow-lg outline-none focus:outline-none mt-5"
+                    type="button"
+                    onClick={handleSubmit}
+                >
+                    <PlusIcon className="h-7 mr-2" /> Agregar
+                </button>          
+            </div>
         </div>
     )
 }

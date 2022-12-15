@@ -43,7 +43,6 @@ export const GitRepositoryService = {
                 github_url: githubUrl,
                 organization: repositoryOwner,
                 name: repositoryName.replace(".git", ""),
-                projects: []
             })
     
             return repo;

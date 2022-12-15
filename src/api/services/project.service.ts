@@ -6,11 +6,12 @@ import { pb } from "../pocketbase"
 
 
 export const ProjectService = {
-    createProject: async(name: string): Promise<Project> => {
+    createProject: async(repositoryId: string, projectName: string): Promise<Project> => {
         try {
             let project = await pb.collection(PocketbaseCollections.Projects).create<Project>({
-                name: name,
-                last_update: new Date()
+                name: projectName,
+                last_update: new Date(),
+                repository: repositoryId
             });
     
             return project;
@@ -19,18 +20,13 @@ export const ProjectService = {
             throw getPocketbaseErrorMessage(err)
         }
     },
-    setProjectToRepository: async(repoId: string, projectId: string): Promise<void> => {
+    getFirstFiveProjectsFromRepository: async (repositoryId: string): Promise<Project[]> => {
         try {
-            let repo = await pb.collection(PocketbaseCollections.GitRepositories).getOne<GitRepository>(repoId);
-
-            let currentProjects = repo.projects;
-    
-            currentProjects.push(projectId);
-    
-            await pb.collection(PocketbaseCollections.GitRepositories).update(repoId, {
-                projects: currentProjects
+            let projects = await pb.collection(PocketbaseCollections.Projects).getList<Project>(1, 5, {
+                filter: `repository="${repositoryId}"` 
             })
 
+            return projects.items;
         } catch(err) {
             throw getPocketbaseErrorMessage(err);
         }

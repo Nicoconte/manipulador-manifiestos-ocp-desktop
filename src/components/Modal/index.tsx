@@ -1,28 +1,24 @@
 import React from "react"
 
 import { XMarkIcon } from '@heroicons/react/24/outline'
-import { AddGitRepositoryForm } from "../AddGitRepositoryForm"
-import { GitRepository } from "../../../data/interfaces/gitRepository.interface"
 
-type AddGitRepositoryModalProps = {
+type ModalProps = {
   open: boolean,
   setOpen: (value: boolean) => void,
-  text: string
+  buttonText: string
   buttonClassname: string,
   icon: JSX.Element | HTMLButtonElement | React.ReactNode,
-  gitRepositories: GitRepository[],
-  setGitRepositories: (value: GitRepository[]) => void  
+  children: JSX.Element | React.ReactNode
 }
 
-export const AddGitRepositoryModal = ({ 
+export const Modal = ({ 
   open, 
   setOpen, 
-  text, 
+  buttonText, 
   icon, 
   buttonClassname,
-  gitRepositories,
-  setGitRepositories
-}: AddGitRepositoryModalProps) => {
+  children
+}: ModalProps) => {
   return (
     <div>
       <button
@@ -30,7 +26,7 @@ export const AddGitRepositoryModal = ({
         type="button"
         onClick={() => setOpen(true)}
       >
-        {icon} {text}
+        {icon} {buttonText}
       </button>
       {open ? (
         <>
@@ -45,13 +41,7 @@ export const AddGitRepositoryModal = ({
                 >
                   <XMarkIcon className="text-red-300 hover:text-red-900 transition ease-linear" />
                 </button>
-                <div className="relative h-60 p-6 flex-auto">
-                  <AddGitRepositoryForm 
-                    setOpenModal={setOpen}
-                    gitRepositories={gitRepositories}
-                    setGitRepositories={setGitRepositories} 
-                  />
-                </div>
+                {children}
               </div>
             </div>            
           </div>
