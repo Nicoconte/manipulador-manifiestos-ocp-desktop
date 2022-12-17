@@ -15,22 +15,17 @@ export const ProjectPagination = ({
     currentPage,
     next,
     prev,
-    goto
 }: ProjectPaginationProps) => {
     
-    useEffect(() => {
-        console.log(Array.from(Array.of(totalPages).keys()).slice(currentPage));
-    }, [])
-
     return (
-        <div className="w-full h-full mt-1 rounded-lg flex space-x-3 justify-end items-start px-3">
-            <button className="w-8 h-8 bg-blue-500 rounded-lg flex justify-center items-center text-white" onClick={prev}>
+        <div className="w-full h-full mt-1 flex justify-end items-start px-3">
+            <button className="w-8 h-8 bg-blue-500 hover:bg-blue-600 transition ease-linear rounded-l-md flex justify-center items-center text-white" onClick={prev}>
                 <ArrowLeftIcon className="w-5 h-5 flex justify-center items-center text-white" />
             </button>
 
-            <span className="w-8 h-8 flex justify-center items-center text-slate-500">{currentPage}</span>
+            <span className="w-20 h-8 bg-blue-500 flex justify-center items-center text-md font-medium dark:text-white text-slate-50">{currentPage} / {totalPages}</span>
             
-            <button className="w-8 h-8 bg-blue-500 rounded-lg flex justify-center items-center text-white" onClick={next}>
+            <button className="w-8 h-8 bg-blue-500 hover:bg-blue-600 transition ease-linear rounded-r-md flex justify-center items-center text-white" onClick={next}>
                 <ArrowRightIcon className="w-5 h-5 flex justify-center items-center text-white" />
             </button>
         </div>
