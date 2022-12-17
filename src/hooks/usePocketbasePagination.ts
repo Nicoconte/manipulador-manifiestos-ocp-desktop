@@ -51,7 +51,7 @@ export const usePocketbasePagination = <T> ({
             setLoading(false);
         })
 
-    }, [currentPage])
+    }, [currentPage, filter])
 
     function next() {        
         setCurrentPage(prev => totalPages && prev >= totalPages ? totalPages : prev + 1)

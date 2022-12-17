@@ -39,7 +39,7 @@ export const Dashboard = () => {
                         setOpen={setOpenModal} 
                         open={openModal} 
                         buttonText="Agrega proyecto"
-                        buttonClassname="ml-4 w-44 h-11 mr-6 text-white shadow-md bg-blue-500 rounded flex justify-center items-center hover:shadow-lg outline-none focus:outline-none"
+                        buttonClassname="ml-4 w-44 h-11 mr-6 text-white shadow-md bg-blue-500 rounded flex justify-center items-center hover:bg-blue-600 transition ease-linear outline-none focus:outline-none"
                         icon={<PlusIcon className="h-5 mr-1" />}                      
                     >
                         <CreateProjectForm

@@ -32,10 +32,15 @@ export const CreateProjectForm = ({
             toast.error("Debe introducir el nombre del proyecto")
             return;
         }
+
+        if (projectName.includes(" ")) {
+            toast.error("El nombre no debe contener espacios en blanco")
+            return;            
+        }
         
         setIsLoading(true);
 
-        ProjectService.createProject(repositoryId, projectName).then((project) => {
+        ProjectService.createProject(repositoryId, projectName.trimEnd().trimStart()).then((project) => {
             toast.success(`El proyecto ${projectName} fue creado exitosamente!`)
         })
         .catch(err => {
