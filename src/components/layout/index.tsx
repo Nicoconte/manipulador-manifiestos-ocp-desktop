@@ -10,20 +10,22 @@ type MainLayoutProps = {
 }
 
 export const MainLayout = ({ children }: MainLayoutProps) => {
-    const { loadGlobalSettings, globalSetting: setting } = useContext(SettingContext) as SettingContextType;
+    const { loadGlobalSettings, globalSetting } = useContext(SettingContext) as SettingContextType;
 
     useEffect(() => {
-        loadGlobalSettings();
-    }, [setting]);
+        if (!globalSetting) {
+            loadGlobalSettings();
+        }
+    }, [globalSetting]);
 
     return (
         <div className="w-full h-full bg-slate-200 dark:bg-sky-900 transition-colors duration-300">
-            {setting &&
+            {globalSetting &&
                 <div className="w-full h-full">
                     {children}
                     <ToggleTheme />
                     <LoadingSpinner />
-                    <ToastContainer theme={setting.theme} autoClose={3000} closeOnClick={true} position={toast.POSITION.BOTTOM_LEFT} />
+                    <ToastContainer theme={globalSetting.theme} autoClose={3000} closeOnClick={true} position={toast.POSITION.BOTTOM_LEFT} />
                 </div>
             }
         </div>

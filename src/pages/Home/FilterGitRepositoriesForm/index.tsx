@@ -64,7 +64,7 @@ export const FilterGitRepositoriesForm = ({
             <input 
                 ref={inputRef}
                 onChange={(e) => onFilter(e.target.value)} 
-                className={`w-11/12 h-3/6 px-3 rounded appearance-none border-2 ${hasError ? "border-red-500" : "border-transparent"} outline-none focus:outline-none dark:bg-cyan-800 dark:text-white dark:placeholder-slate-100 shadow-md`}
+                className={`w-11/12 h-3/6 px-4 rounded-3xl appearance-none border-2 ${hasError ? "border-red-500" : "border-transparent"} outline-none focus:outline-none dark:bg-cyan-800 dark:text-white dark:placeholder-slate-100 shadow-md`}
                 placeholder="Filtros, ej: repo:turepositorio, org:tuorganizacion"
                 title={title}
             />

@@ -52,7 +52,7 @@ export const Home = () => {
 
     return (
         <div className="w-full h-full">
-            <div className="w-full h-1/6 flex items-center justify-center">
+            <div className="w-full h-24 flex items-center justify-center">
                 <div className="w-full h-full">
                     <FilterGitRepositoriesForm
                         gitRepositories={gitRepositories}
@@ -76,7 +76,7 @@ export const Home = () => {
                 setOpen={setOpenModal}
                 buttonText={""}
                 icon={<PlusIcon className="h-6" />}
-                buttonClassname={"bg-blue-500 rounded-full fixed w-11 h-11 rounded-full right-2 bottom-16 flex flex-row justify-center items-center text-white font-bold text-md shadow hover:shadow-lg outline-none focus:outline-none"}
+                buttonClassname={"bg-blue-500 rounded-full fixed w-10 h-10 rounded-full right-2 bottom-16 flex flex-row justify-center items-center text-white font-bold text-md shadow hover:shadow-lg outline-none focus:outline-none"}
             >
                 <AddGitRepositoryForm
                     setOpenModal={setOpenModal}

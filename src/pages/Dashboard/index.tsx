@@ -6,25 +6,26 @@ import { Modal } from "../../components/Modal";
 import { Project } from "../../data/interfaces/project.interface";
 import { useGitRepository } from "../../hooks/useGitRepository";
 import { CreateProjectForm } from "./Projects/CreateProjectForm";
+import { ProjectDisplayer } from "./Projects/ProjectDisplayer";
 
 export const Dashboard = () => {
     const { repository } = useGitRepository();
-    const [projects, setProjects] = useState<Project[]>([]);
+
+    const [hasProjects, setHasProjects] = useState<boolean>(false);
     const [openModal, setOpenModal] = useState<boolean>(false);
 
     useEffect(() => {
         if (repository) {
-            ProjectService.getFirstFiveProjectsFromRepository(repository.id).then(proj => {
-                setProjects(proj);
+            ProjectService.repositoryHasProjects(repository.id).then(res => {
+                setHasProjects(res);
             })
         }
-
-        console.log(projects);
+        console.log(hasProjects);
     }, [repository])
 
     return (
         <div className="w-full h-full flex flex-col">
-            <div className="w-full h-1/6 flex flex-row bg-slate-50 dark:bg-cyan-800 shadow-lg">
+            <div className="w-full h-1/6 flex flex-row bg-slate-50 dark:bg-cyan-800 shadow-sm">
                 <div className="w-7/12 h-full flex flex-row justify-start items-center">
                     <span className="text-xl font-medium ml-4 dark:text-white">
                         <Link to="/" className="hover:text-slate-400 transition ease-linear">Repositorios</Link> / <span className="text-slate-400 dark:text-slate-300">{repository?.name} </span>
@@ -49,12 +50,13 @@ export const Dashboard = () => {
                 </div>
             </div>
             <div className="w-full h-5/6">
-                {projects.length === 0 &&
+                {!hasProjects &&
                     <div className="w-full h-full flex flex-col justify-center items-center">
                         <ArchiveBoxXMarkIcon className="h-24 mb-3 text-red-800 dark:text-red-500" />
-                        <span className="font-bold text-2xl mb-36 text-slate-800 dark:text-slate-50">No hay repositorios asignado a este repositorio</span>
+                        <span className="font-bold text-2xl mb-36 text-slate-800 dark:text-slate-50">No hay proyectos asignado a este repositorio</span>
                    </div>
                 }
+                {hasProjects && repository?.id && <ProjectDisplayer repositoryId={repository.id} />}
             </div>
         </div>
     )

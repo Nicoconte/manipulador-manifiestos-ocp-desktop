@@ -20,13 +20,13 @@ export const ProjectService = {
             throw getPocketbaseErrorMessage(err)
         }
     },
-    getFirstFiveProjectsFromRepository: async (repositoryId: string): Promise<Project[]> => {
+    repositoryHasProjects: async (repositoryId: string): Promise<boolean> => {
         try {
-            let projects = await pb.collection(PocketbaseCollections.Projects).getList<Project>(1, 5, {
+            let projects = await pb.collection(PocketbaseCollections.Projects).getList<Project>(1, 1, {
                 filter: `repository="${repositoryId}"` 
             })
 
-            return projects.items;
+            return projects.items.length > 0;
         } catch(err) {
             throw getPocketbaseErrorMessage(err);
         }

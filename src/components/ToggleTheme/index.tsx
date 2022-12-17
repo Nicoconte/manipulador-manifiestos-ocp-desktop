@@ -11,10 +11,10 @@ export const ToggleTheme = () => {
     
 
     return (
-        <div className="fixed w-11 h-11 rounded-full right-2 bottom-2">
+        <div className="fixed w-10 h-10 rounded-full right-2 bottom-2">
             <button onClick={toggleTheme} className={`w-full h-full flex justify-center items-center rounded-full ${theme === "light" ? "bg-cyan-900" : "bg-orange-400"}`}>
-                {theme === "light" && <MoonIcon className="h-6 text-white" />}
-                {theme === "dark" && <SunIcon className="h-6 text-white" />}
+                {theme === "light" && <MoonIcon className="h-5 text-white" />}
+                {theme === "dark" && <SunIcon className="h-5 text-white" />}
             </button>
         </div>
     )

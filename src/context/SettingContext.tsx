@@ -13,6 +13,7 @@ const SettingProvider: React.FC<React.ReactNode> = ({ children }) => {
     const [setting, setSetting] = React.useState<GlobalSetting | null>(null);
 
     const loadGlobalSettings = () => {
+        console.log("AAAAAAAAAAAA")
         SettingService.getGlobalSetting().then(set => {
             setSetting(set);
         })
