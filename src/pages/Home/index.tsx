@@ -81,7 +81,7 @@ export const Home = () => {
                 <AddGitRepositoryForm
                     setOpenModal={setOpenModal}
                     gitRepositories={gitRepositories}
-                    setGitRepositories={setGitRepositories}
+                    setGitRepositories={setGitRepositoriesFiltered}
                 />
             </Modal>
         </div>

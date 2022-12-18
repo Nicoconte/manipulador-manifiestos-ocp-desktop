@@ -1,19 +1,22 @@
-import { HandRaisedIcon, PlusIcon, QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
+import { PlusIcon, QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import React, { useContext, useState } from "react";
 import { toast } from "react-toastify";
 import { ProjectService } from "../../../../api/services/project.service";
 import { GlobalContext, GlobalContextType } from "../../../../context/GlobalContext";
 import { Project } from "../../../../data/interfaces/project.interface";
-import { getPocketbaseErrorMessage } from "../../../../helpers/pocketbase.helper";
 
 type CreateProjectFormProps = {
     setOpenModal: (value: boolean) => void,
-    repositoryId: string | undefined
+    repositoryId: string | undefined,
+    projects: Project[],
+    setProjects: (value: Project[]) => void
 }
 
 export const CreateProjectForm = ({
     setOpenModal,
-    repositoryId
+    repositoryId,
+    projects,
+    setProjects
 }: CreateProjectFormProps) => {
     const [projectName, setProjectName] = useState<string>("");
     const { setIsLoading } = useContext(GlobalContext) as GlobalContextType;
@@ -42,6 +45,12 @@ export const CreateProjectForm = ({
 
         ProjectService.createProject(repositoryId, projectName.trimEnd().trimStart()).then((project) => {
             toast.success(`El proyecto ${projectName} fue creado exitosamente!`)
+
+            let currentProjects = [...projects];
+
+            currentProjects.unshift(project);
+
+            setProjects(currentProjects);
         })
         .catch(err => {
             toast.error(err);
