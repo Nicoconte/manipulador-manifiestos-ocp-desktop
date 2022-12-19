@@ -5,22 +5,26 @@ import { ProjectService } from "../../api/services/project.service";
 import { Modal } from "../../components/Modal";
 import { Project } from "../../data/interfaces/project.interface";
 import { useGitRepository } from "../../hooks/useGitRepository";
-import { CreateProjectForm } from "./Projects/CreateProjectForm";
-import { ProjectDisplayer } from "./Projects/ProjectDisplayer";
+import { CreateProjectForm } from "./CreateProjectForm";
+import { ProjectDisplayer } from "./ProjectDisplayer";
 
-export const Dashboard = () => {
+export const Projects = () => {
     const { repository } = useGitRepository();
+    
+    const [projects, setProjects] = useState<Project[]>([]);
+    const [projectsFiltered, setProjectsFiltered] = useState<Project[]>([]);
 
     const [hasProjects, setHasProjects] = useState<boolean>(false);
     const [openModal, setOpenModal] = useState<boolean>(false);
 
     useEffect(() => {
         if (repository) {
-            ProjectService.repositoryHasProjects(repository.id).then(res => {
-                setHasProjects(res);
+            ProjectService.getAll(repository.id).then(res => {
+                setHasProjects(res.length > 0);
+                setProjects(res);
+                setProjectsFiltered(res);
             })
         }
-        console.log(hasProjects);
     }, [repository])
 
     return (
@@ -45,6 +49,8 @@ export const Dashboard = () => {
                         <CreateProjectForm
                             setOpenModal={setOpenModal}
                             repositoryId={repository?.id}
+                            setProjects={setProjectsFiltered}
+                            projects={projects}
                         />                        
                     </Modal>
                 </div>
@@ -56,7 +62,13 @@ export const Dashboard = () => {
                         <span className="font-bold text-2xl mb-36 text-slate-800 dark:text-slate-50">No hay proyectos asignado a este repositorio</span>
                    </div>
                 }
-                {hasProjects && repository?.id && <ProjectDisplayer repositoryId={repository.id} />}
+                {hasProjects && repository?.id && <ProjectDisplayer 
+                    repositoryId={repository.id} 
+                    projects={projects} 
+                    setProjects={setProjects}
+                    projectsFiltered={projectsFiltered}
+                    setProjectsFiltered={setProjectsFiltered}
+                />}
             </div>
         </div>
     )

@@ -52,7 +52,7 @@ export const AddGitRepositoryForm = ({ setOpenModal, gitRepositories, setGitRepo
 
             let currRepositories = [...gitRepositories];
 
-            currRepositories.push(repo);
+            currRepositories.unshift(repo);
 
             setGitRepositories(currRepositories);
 

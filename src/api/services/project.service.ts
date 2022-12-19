@@ -30,5 +30,10 @@ export const ProjectService = {
         } catch(err) {
             throw getPocketbaseErrorMessage(err);
         }
+    },
+    getAll: async(repositoryId: string): Promise<Project[]> => {
+        return await pb.collection(PocketbaseCollections.Projects).getFullList(undefined, {
+            filter: `repository='${repositoryId}'`
+        })
     }
 }

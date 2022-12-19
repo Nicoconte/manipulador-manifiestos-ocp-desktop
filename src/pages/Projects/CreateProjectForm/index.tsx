@@ -1,9 +1,9 @@
 import { PlusIcon, QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import React, { useContext, useState } from "react";
 import { toast } from "react-toastify";
-import { ProjectService } from "../../../../api/services/project.service";
-import { GlobalContext, GlobalContextType } from "../../../../context/GlobalContext";
-import { Project } from "../../../../data/interfaces/project.interface";
+import { ProjectService } from "../../../api/services/project.service";
+import { GlobalContext, GlobalContextType } from "../../../context/GlobalContext";
+import { Project } from "../../../data/interfaces/project.interface";
 
 type CreateProjectFormProps = {
     setOpenModal: (value: boolean) => void,

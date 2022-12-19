@@ -2,19 +2,19 @@ import { useState, useEffect } from "react";
 import { pb } from "../api/pocketbase";
 import { getPocketbaseErrorMessage } from "../helpers/pocketbase.helper";
 
-type usePocketbasePaginationProps = {
+type usePocketbasePaginationProps<T> = {
     collectionName: string,
     quantityPerPage: number,
     filter: string
     setLoading: (value: boolean) => void,
-    onError: (err: string) => void
+    onError: (err: string) => void,
+    setResult: (values: T[]) => void
 }
 
 type usePocketbasePaginationResponse<T> = {
     next: () => void,
     prev: () => void,
     goto: (pageNumber: number) => void,
-    items: T[],
     page: number,
     totalPages: number,
 }
@@ -24,12 +24,12 @@ export const usePocketbasePagination = <T> ({
     quantityPerPage,
     filter,
     setLoading,
-    onError
-} : usePocketbasePaginationProps): usePocketbasePaginationResponse<T>  => {
+    onError,
+    setResult
+} : usePocketbasePaginationProps<T>): usePocketbasePaginationResponse<T>  => {
     const [fetchTotalPages, setFetchTotalPages] = useState<boolean>(false);
     const [currentPage, setCurrentPage] = useState<number>(1)
     const [totalPages, setTotalPages] = useState<number>();
-    const [items, setItems] = useState<T[]>();
 
     useEffect(() => {
         setLoading(true);
@@ -42,7 +42,7 @@ export const usePocketbasePagination = <T> ({
                 setTotalPages(pagesCalcResult === 0 ? 1 : pagesCalcResult)            
                 setFetchTotalPages(true); //Flag to not fetch total pages again
             }
-            setItems(res.items); //First load
+            setResult(res.items); //First load
         })
         .catch(err => {
             onError(getPocketbaseErrorMessage(err));
@@ -70,8 +70,7 @@ export const usePocketbasePagination = <T> ({
     return {
         next: next,
         prev: prev,
-        goto: goto,
-        items: items,        
+        goto: goto,       
         page: currentPage,
         totalPages: totalPages
     } as usePocketbasePaginationResponse<T>;

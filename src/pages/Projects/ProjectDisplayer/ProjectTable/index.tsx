@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Project } from "../../../../../data/interfaces/project.interface";
+import { Project } from "../../../../data/interfaces/project.interface";
 
 type ProjectTableProps = {
     projects: Project[]
