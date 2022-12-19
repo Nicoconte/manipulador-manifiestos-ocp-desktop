@@ -29,7 +29,7 @@ export const ProjectTable = ({ projects }: ProjectTableProps) => {
                     {!projects.length &&
                         <tr className="bg-white border-bdark:bg-cyan-800">
                             <td className="py-4 px-6 w-full flex justify-center items-center">
-                                <ArchiveBoxXMarkIcon className="h-6 mr-2" /> No se encontramos el proyecto que buscabas
+                                <ArchiveBoxXMarkIcon className="h-6 mr-2" /> No encontramos el proyecto que buscabas
                             </td>
                         </tr>
                     }
