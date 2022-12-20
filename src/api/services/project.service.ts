@@ -1,5 +1,4 @@
 import { PocketbaseCollections } from "../../data/enums/pbCollection.enum"
-import { GitRepository } from "../../data/interfaces/gitRepository.interface"
 import { Project } from "../../data/interfaces/project.interface";
 import { getPocketbaseErrorMessage } from "../../helpers/pocketbase.helper";
 import { pb } from "../pocketbase"
@@ -31,9 +30,10 @@ export const ProjectService = {
             throw getPocketbaseErrorMessage(err);
         }
     },
-    getAll: async(repositoryId: string): Promise<Project[]> => {
+    getAll: async(repositoryId: string, sort: string="-created"): Promise<Project[]> => {
         return await pb.collection(PocketbaseCollections.Projects).getFullList(undefined, {
-            filter: `repository='${repositoryId}'`
+            filter: `repository='${repositoryId}'`,
+            sort: sort
         })
     }
 }

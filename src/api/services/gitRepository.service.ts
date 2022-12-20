@@ -20,9 +20,11 @@ export const GitRepositoryService = {
             throw getPocketbaseErrorMessage(err);
         }
     },
-    getAll: async(): Promise<GitRepository[]> => {
+    getAll: async(sort: string = "-created"): Promise<GitRepository[]> => {
         try {
-            return await pb.collection(PocketbaseCollections.GitRepositories).getFullList<GitRepository>();
+            return await pb.collection(PocketbaseCollections.GitRepositories).getFullList<GitRepository>(undefined, {
+                sort: sort
+            });
         } catch(err) {
             throw getPocketbaseErrorMessage(err);
         }
