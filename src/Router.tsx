@@ -3,10 +3,10 @@ import React from "react";
 import {
     createBrowserRouter,
 } from "react-router-dom";
-import { Applications } from "./pages/Applications";
+import { Project } from "./pages/Project";
 
 import { Home } from "./pages/Home";
-import { Projects } from "./pages/Projects";
+import { Repository } from "./pages/Repository";
   
 export const router = createBrowserRouter([
     {
@@ -15,10 +15,10 @@ export const router = createBrowserRouter([
     },
     {
         path: "/repository/:name",
-        element: <Projects />,
+        element: <Repository />,
     },
     {
         path: "/project/:project_name",
-        element: <Applications />
+        element: <Project />
     }
 ]);

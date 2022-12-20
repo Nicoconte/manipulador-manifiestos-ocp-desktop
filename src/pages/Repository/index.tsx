@@ -8,7 +8,7 @@ import { useGitRepository } from "../../hooks/useGitRepository";
 import { CreateProjectForm } from "./CreateProjectForm";
 import { ProjectDisplayer } from "./ProjectDisplayer";
 
-export const Projects = () => {
+export const Repository = () => {
     const { repository } = useGitRepository();
     
     const [projects, setProjects] = useState<Project[]>([]);

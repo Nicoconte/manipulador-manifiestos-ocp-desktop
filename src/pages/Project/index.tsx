@@ -4,7 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { useGitRepository } from "../../hooks/useGitRepository";
 
 
-export const Applications = () => {
+export const Project = () => {
     const { repository } = useGitRepository();
     const { project_name } = useParams();
 
