@@ -1,8 +1,9 @@
 export enum GitOperation {
     Clone = "clone",
     Fetch = "fetch",
-    Branches = "branches",
-    Branch = "branch",
+    ListLocalBranches = "list-local-branches",
+    ListAllBranches = "list-all-branches",
+    CreateBranch = "create-branch",
     Add = "add",
     Commit = "commit",
     Checkout = "checkout",

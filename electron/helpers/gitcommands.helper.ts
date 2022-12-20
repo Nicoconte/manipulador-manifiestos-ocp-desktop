@@ -19,8 +19,9 @@ export interface GitCommandResponse {
 export enum GitOperation {
     Clone = "clone",
     Fetch = "fetch",
-    Branches = "branches",
-    Branch = "branch",
+    ListLocalBranches = "list-local-branches",
+    ListAllBranches = "list-all-branches",
+    CreateBranch = "create-branch",
     Add = "add",
     Commit = "commit",
     Checkout = "checkout",
@@ -59,7 +60,7 @@ export const executeGitCommand: { [key: string]: (args: GitCommandArgs) => Promi
             message: "Contenido remoto descargado"
         } as GitCommandResponse        
     },
-    "branches": async (args: GitCommandArgs) : Promise<GitCommandResponse> => {
+    "list-all-branches": async (args: GitCommandArgs) : Promise<GitCommandResponse> => {
         if (!fs.existsSync(args.localPath)) {
             return {
                 success: false,
@@ -74,7 +75,7 @@ export const executeGitCommand: { [key: string]: (args: GitCommandArgs) => Promi
             branches: branches.all
         } as GitCommandResponse;
     },
-    "branch": async (args: GitCommandArgs) : Promise<GitCommandResponse> => {
+    "create-branch": async (args: GitCommandArgs) : Promise<GitCommandResponse> => {
         if (!fs.existsSync(args.localPath)) {
             return {
                 success: false,
@@ -87,6 +88,21 @@ export const executeGitCommand: { [key: string]: (args: GitCommandArgs) => Promi
         return {
             success: true,
             message: `Rama ${args.branch} creada`
+        } as GitCommandResponse
+    },
+    "list-local-branches": async (args: GitCommandArgs) : Promise<GitCommandResponse> => {
+        if (!fs.existsSync(args.localPath)) {
+            return {
+                success: false,
+                message: "No se pudo crear la rama nueva: El repositorio local no existe"
+            } as GitCommandResponse
+        }        
+
+        let response = await simpleGit(args.localPath).branchLocal();
+
+        return {
+            success: true,
+            branches: response.all
         } as GitCommandResponse
     },
     "add": async (args: GitCommandArgs) : Promise<GitCommandResponse> => {
