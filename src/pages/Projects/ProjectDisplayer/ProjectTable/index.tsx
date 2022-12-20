@@ -1,6 +1,6 @@
 import { ArchiveBoxXMarkIcon } from "@heroicons/react/24/outline";
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Project } from "../../../../data/interfaces/project.interface";
 
 type ProjectTableProps = {
@@ -10,6 +10,13 @@ type ProjectTableProps = {
 export const ProjectTable = ({ projects }: ProjectTableProps) => {
     const navigate = useNavigate();
 
+    const handleNavigation = (projectName: string) => {
+        console.log(projectName);
+        navigate(`/project/${projectName}`)
+    }
+
+    useEffect(() => { }, [])
+    
     return (
         <div className="w-full h-full">
             <table className="w-full text-md text-left text-gray-500 dark:text-gray-400">
@@ -22,7 +29,7 @@ export const ProjectTable = ({ projects }: ProjectTableProps) => {
                 </thead>
                 <tbody>
                     {projects && projects.map((i, index) =>
-                        <tr onClick={() => navigate("/")} key={index} className="bg-white border-b dark:border-b-cyan-900 dark:text-slate-50 transition ease-linear cursor-pointer hover:bg-slate-300 dark:hover:bg-cyan-700 dark:bg-cyan-900">
+                        <tr onClick={() => handleNavigation(i.name)} key={index} className="bg-white border-b dark:border-b-cyan-900 dark:text-slate-50 transition ease-linear cursor-pointer hover:bg-slate-300 dark:hover:bg-cyan-700 dark:bg-cyan-900">
                             <td className="py-4 px-6">{i.name}</td>
                         </tr>
                     )}

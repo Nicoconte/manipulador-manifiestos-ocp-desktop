@@ -32,7 +32,7 @@ export const Projects = () => {
             <div className="w-full h-1/6 flex flex-row bg-slate-50 dark:bg-cyan-800 shadow-sm">
                 <div className="w-7/12 h-full flex flex-row justify-start items-center">
                     <span className="text-xl font-medium ml-4 dark:text-white">
-                        <Link to="/" className="hover:text-slate-400 transition ease-linear">Repositorios</Link> / <span className="text-slate-400 dark:text-slate-300">{repository?.name} </span>
+                        <Link to="/" className="hover:text-slate-400 transition ease-linear">Repositorio</Link> / <span className="text-slate-400 dark:text-slate-300">{repository?.name} </span>
                     </span>
                     <button className="ml-4 w-8 h-8 rounded-full flex justify-center items-center hover:shadow-lg outline-none focus:outline-none">
                         <Cog6ToothIcon className="h-6 dark:text-white" />

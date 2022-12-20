@@ -58,7 +58,7 @@ export const GitRepositoryCards = ({ repository }: GitRepositoryCardsProps) => {
         setIsLoading(false);
 
         localStorage.setItem("current_repo", repository.name);
-        navigator(`dashboard/${repository.name}`)
+        navigator(`repository/${repository.name}`)
     }
 
     const openGithubUrl = () => {

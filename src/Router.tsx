@@ -3,6 +3,7 @@ import React from "react";
 import {
     createBrowserRouter,
 } from "react-router-dom";
+import { Applications } from "./pages/Applications";
 
 import { Home } from "./pages/Home";
 import { Projects } from "./pages/Projects";
@@ -13,7 +14,11 @@ export const router = createBrowserRouter([
       element: <Home />,
     },
     {
-        path: "/dashboard/:name",
-        element: <Projects />
+        path: "/repository/:name",
+        element: <Projects />,
+    },
+    {
+        path: "/project/:project_name",
+        element: <Applications />
     }
 ]);
