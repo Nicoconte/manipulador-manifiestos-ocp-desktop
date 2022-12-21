@@ -5,8 +5,8 @@ import { ProjectService } from "../../api/services/project.service";
 import { Modal } from "../../components/Modal";
 import { Project } from "../../data/interfaces/project.interface";
 import { useGitRepository } from "../../hooks/useGitRepository";
-import { CreateProjectForm } from "./CreateProjectForm";
-import { ProjectDisplayer } from "./ProjectDisplayer";
+import { CreateProjectForm } from "./Projects/CreateProjectForm";
+import { ProjectDisplayer } from "./Projects";
 
 export const Repository = () => {
     const { repository } = useGitRepository();
@@ -18,14 +18,19 @@ export const Repository = () => {
     const [openModal, setOpenModal] = useState<boolean>(false);
 
     useEffect(() => {
-        if (repository) {
+        if (repository && projectsFiltered.length === 0) {
             ProjectService.getAll(repository.id).then(res => {
                 setHasProjects(res.length > 0);
                 setProjects(res);
                 setProjectsFiltered(res);
             })
         }
-    }, [repository])
+
+        if (projectsFiltered.length > 0) {
+            setHasProjects(true);
+        }
+        
+    }, [repository, projectsFiltered])
 
     return (
         <div className="w-full h-full flex flex-col">
