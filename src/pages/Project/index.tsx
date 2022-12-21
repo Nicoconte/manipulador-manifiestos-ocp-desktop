@@ -1,4 +1,4 @@
-import { Cog6ToothIcon } from "@heroicons/react/24/outline";
+import { ArchiveBoxXMarkIcon, Cog6ToothIcon } from "@heroicons/react/24/outline";
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -9,20 +9,21 @@ import { GitCommandArgs } from "../../data/interfaces/git.interface";
 import { getProjectBranches } from "../../helpers/git.helper";
 import { useGitCommand } from "../../hooks/useGitCommands";
 import { useGitRepository } from "../../hooks/useGitRepository";
+import { ApplicationContainer } from "./Applications";
 
 
 export const Project = () => {
     const { project_name } = useParams();
-    
+
     const { setIsLoading } = useContext(GlobalContext) as GlobalContextType;
-    
+
     const { repository } = useGitRepository();
     const { git } = useGitCommand();
 
     const [branches, setBranches] = useState<Branches[]>([]);
 
-    const handleBranches = async() => {
-        if (!repository || !project_name) {            
+    const handleBranches = async () => {
+        if (!repository || !project_name) {
             toast.error("No se pudo obtener las aplicaciones de este proyecto");
             return;
         }
@@ -33,16 +34,16 @@ export const Project = () => {
 
         //Local + remote branches
         let allBranches = getProjectBranches((await git(GitOperation.ListAllBranches, args)).branches, project_name);
-        
+
         if (!allBranches.length) {
             setIsLoading(false);
             return;
         }
 
         //Local only
-        let localBranches = (await git(GitOperation.ListLocalBranches, args )).branches;
-        
-        for(let branch of allBranches) {
+        let localBranches = (await git(GitOperation.ListLocalBranches, args)).branches;
+
+        for (let branch of allBranches) {
             if (!localBranches.includes(branch.name)) {
                 await git(GitOperation.CreateBranch, {
                     localPath: repository.fullPath,
@@ -52,7 +53,7 @@ export const Project = () => {
             }
         }
 
-        let lastestLocalBranches = getProjectBranches((await git(GitOperation.ListLocalBranches, args )).branches, project_name);
+        let lastestLocalBranches = getProjectBranches((await git(GitOperation.ListLocalBranches, args)).branches, project_name);
 
         setBranches(lastestLocalBranches);
 
@@ -79,10 +80,14 @@ export const Project = () => {
                 <div className="w-5/12 h-full flex flex-row justify-end items-center"></div>
             </div>
             <div className="w-full h-5/6">
-                {branches.length ? 
-                    branches.map((b, i) => <span key={i}>{b.name} / {b.fullname} <br/></span>) :
-                    <span>No hay aplicaciones</span>
+                {!branches.length &&
+                    <div className="w-full h-full flex flex-col justify-center items-center">
+                        <ArchiveBoxXMarkIcon className="h-24 mb-3 text-red-800 dark:text-red-500" />
+                        <span className="font-bold text-2xl mb-36 text-slate-800 dark:text-slate-50">No hay aplicaciones disponibles para este proyecto</span>
+                    </div>
                 }
+                
+                {branches.length && <ApplicationContainer />}
             </div>
         </div>
     )

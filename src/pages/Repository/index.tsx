@@ -6,7 +6,7 @@ import { Modal } from "../../components/Modal";
 import { Project } from "../../data/interfaces/project.interface";
 import { useGitRepository } from "../../hooks/useGitRepository";
 import { CreateProjectForm } from "./Projects/CreateProjectForm";
-import { ProjectDisplayer } from "./Projects";
+import { ProjectContainer } from "./Projects";
 
 export const Repository = () => {
     const { repository } = useGitRepository();
@@ -14,23 +14,17 @@ export const Repository = () => {
     const [projects, setProjects] = useState<Project[]>([]);
     const [projectsFiltered, setProjectsFiltered] = useState<Project[]>([]);
 
-    const [hasProjects, setHasProjects] = useState<boolean>(false);
     const [openModal, setOpenModal] = useState<boolean>(false);
 
     useEffect(() => {
         if (repository && projectsFiltered.length === 0) {
             ProjectService.getAll(repository.id).then(res => {
-                setHasProjects(res.length > 0);
                 setProjects(res);
                 setProjectsFiltered(res);
             })
         }
-
-        if (projectsFiltered.length > 0) {
-            setHasProjects(true);
-        }
         
-    }, [repository, projectsFiltered])
+    }, [repository])
 
     return (
         <div className="w-full h-full flex flex-col">
@@ -61,13 +55,13 @@ export const Repository = () => {
                 </div>
             </div>
             <div className="w-full h-5/6">
-                {!hasProjects &&
+                {!projectsFiltered.length &&
                     <div className="w-full h-full flex flex-col justify-center items-center">
                         <ArchiveBoxXMarkIcon className="h-24 mb-3 text-red-800 dark:text-red-500" />
                         <span className="font-bold text-2xl mb-36 text-slate-800 dark:text-slate-50">No hay proyectos asignado a este repositorio</span>
                    </div>
                 }
-                {hasProjects && repository?.id && <ProjectDisplayer 
+                {projectsFiltered.length && repository?.id && <ProjectContainer 
                     repositoryId={repository.id} 
                     projects={projects} 
                     setProjects={setProjects}

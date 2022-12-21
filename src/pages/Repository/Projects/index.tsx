@@ -12,7 +12,7 @@ type ProjectDisplayerProps = {
     setProjectsFiltered: (values: Project[]) => void
 }
 
-export const ProjectDisplayer = ({ 
+export const ProjectContainer = ({ 
     repositoryId,
     projects,
     setProjects,
