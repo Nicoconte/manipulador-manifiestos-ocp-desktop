@@ -3,9 +3,9 @@ import React from "react";
 import {
     createBrowserRouter,
 } from "react-router-dom";
-import { Project } from "./pages/Project";
 
 import { Home } from "./pages/Home";
+import { NotFound } from "./pages/NotFound";
 import { Repository } from "./pages/Repository";
   
 export const router = createBrowserRouter([
@@ -15,10 +15,10 @@ export const router = createBrowserRouter([
     },
     {
         path: "/repository/:name",
-        element: <Repository />,
+        element: <Repository />
     },
     {
-        path: "/project/:project_name",
-        element: <Project />
+        path: "*",
+        element: <NotFound />
     }
 ]);

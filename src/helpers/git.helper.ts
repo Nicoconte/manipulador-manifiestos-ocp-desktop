@@ -1,4 +1,4 @@
-import { Branches } from "../data/interfaces/branches.interfaces";
+import { Application } from "../data/interfaces/application.interface";
 
 export const parseGithubUrl = (url: string): {[key: string]: any} => {
     return {
@@ -7,23 +7,32 @@ export const parseGithubUrl = (url: string): {[key: string]: any} => {
     }
 }
 
-export const normalizeBranchesName = (branches: string[]): string[] => {
-    return branches.map(b => b.includes("remotes/origin") ? b.replace("remotes/origin/", "") : b);
-}
-
 export const normalizeRepositoryName = (name: string): string => {
     return name.replace(".git", "");
 }
 
-export const getProjectBranches = (branches: string[], projectName: string): Branches[] => {
+export const normalizeProjectBranches = (branches: string[], projectName: string): Application[] => {
     return branches.map(b => b.includes("remotes/origin") ? {
         name: b.replace("remotes/origin/", ""),
         origin: b.split("/")[1],
         fullname: b
-    } as Branches : 
+    } as Application : 
     {
         name: b,
         fullname: b,
         origin: "local"
-    } as Branches).filter(c => c.name.toLowerCase().includes(projectName.toLowerCase()));
+    } as Application).filter(c => c.name.toLowerCase().includes(projectName.toLowerCase()));
+}
+
+export const normalizeBranches = (branches: string[], projectName: string): Application[] => {
+    return branches.map(b => b.includes("remotes/origin") ? {
+        name: b.replace("remotes/origin/", ""),
+        origin: b.split("/")[1],
+        fullname: b
+    } as Application : 
+    {
+        name: b,
+        fullname: b,
+        origin: "local"
+    } as Application).filter(c => c.name.toLowerCase().includes(projectName.toLowerCase()));
 }

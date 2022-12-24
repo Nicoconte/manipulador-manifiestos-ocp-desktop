@@ -1,4 +1,4 @@
-import { Branches } from "./branches.interfaces";
+import { Branches } from "./application.interface";
 import { GitRepository } from "./gitRepository.interface";
 
 export interface Project {
