@@ -1,5 +1,6 @@
 import { ArchiveBoxXMarkIcon } from "@heroicons/react/24/outline";
 import React, { useContext } from "react";
+import { SideModal } from "../../../../../components/SideModal";
 import { RepositoryContext, RepositoryContextType } from "../../../../../context/RepositoryContext";
 import { Application } from "../../../../../data/interfaces/application.interface";
 

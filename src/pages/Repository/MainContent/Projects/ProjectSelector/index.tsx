@@ -21,9 +21,9 @@ export const ProjectSelector = () => {
     }
 
     return (
-        <div className="w-full h-full flex justify-start items-center ml-6">
-            <select onChange={(e) => handleProjectSelected(e.target.value)} className="text-slate-400 text-sm rounded-3xl h-9 px-3 w-full outline-none focus:outline-none appearance-none shadow-md">
-                <option selected>Seleccione un proyecto</option>
+        <div className="w-full h-full flex justify-start items-center ml-2">
+            <select onChange={(e) => handleProjectSelected(e.target.value)} className="text-slate-400 text-sm rounded-3xl h-9 px-4 w-full outline-none focus:outline-none appearance-none shadow-md">
+                <option selected>Seleccione proyecto</option>
                 { projects.length && projects.map((p, i) => (
                   <option className="text-slate-900" key={i} defaultValue={p.name}>{p.name}</option>  
                 ))}
