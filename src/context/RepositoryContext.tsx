@@ -3,16 +3,19 @@ import { GitOperation } from "../data/enums/git.enum";
 import { Application } from "../data/interfaces/application.interface";
 import { GitRepository } from "../data/interfaces/gitRepository.interface";
 import { Project } from "../data/interfaces/project.interface";
-import { useGitCommand } from "../hooks/useGitCommands";
 import { useGitRepository } from "../hooks/useGitRepository";
 
 export type RepositoryContextType = {
     repository: GitRepository | undefined,
     setRepository: (value: GitRepository) => void,
     currentProject: Project | undefined,
-    setCurrentProject: (value: Project) => void,
+    setCurrentProject: (value: Project | undefined) => void,
     projectApplications: Application[] | undefined,
-    setProjectApplications: (value: Application[]) => void
+    setProjectApplications: (value: Application[]) => void,
+    hasError: boolean,
+    setHasError: (value: boolean) => void,
+    projectApplicationsFiltered: Application[] | undefined,
+    setProjectApplicationsFiltered: (value: Application[]) => void,
 }
 
 const RepositoryContext = React.createContext<RepositoryContextType | null>(null);
@@ -22,8 +25,12 @@ const RepositoryProvider: React.FC<React.ReactNode> = ({ children }) => {
 
     const [repository, setRepository] = useState<GitRepository>();    
 
+    const [ hasError, setHasError ] = useState<boolean>(false);
+
     const [currentProject, setCurrentProject] = useState<Project>();
-    const [projectApplications, setProjectApplications] = useState<Application[]>();
+
+    const [projectApplicationsFiltered, setProjectApplicationsFiltered] = useState<Application[]>([]);
+    const [projectApplications, setProjectApplications] = useState<Application[]>([]);
 
     useEffect(() => {
         if (localStorageRepo) {
@@ -38,7 +45,11 @@ const RepositoryProvider: React.FC<React.ReactNode> = ({ children }) => {
             currentProject,
             setCurrentProject,
             projectApplications,
-            setProjectApplications
+            setProjectApplications,
+            hasError,
+            setHasError,
+            projectApplicationsFiltered,
+            setProjectApplicationsFiltered
         }}>
             {children}
         </RepositoryContext.Provider>

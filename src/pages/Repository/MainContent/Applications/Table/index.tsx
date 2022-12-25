@@ -1,6 +1,5 @@
 import { ArchiveBoxXMarkIcon } from "@heroicons/react/24/outline";
-import React, { useContext } from "react";
-import { SideModal } from "../../../../../components/SideModal";
+import React, { useContext, useEffect } from "react";
 import { RepositoryContext, RepositoryContextType } from "../../../../../context/RepositoryContext";
 import { Application } from "../../../../../data/interfaces/application.interface";
 
@@ -23,18 +22,26 @@ type ContentTableProps = {
     applications: Application[] | undefined;
 }
 const ContentTable = ({ applications }: ContentTableProps) => {
+    if (applications?.length === 0) {
+        return (
+            <table className="w-full text-md text-left text-gray-500 dark:text-gray-400">
+                <tbody>
+                    <tr className="bg-white border-bdark:bg-cyan-800">
+                        <td className="py-4 px-6 w-full flex justify-center items-center">
+                            <ArchiveBoxXMarkIcon className="h-6 mr-2" /> No encontramos la aplicacion que buscabas.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        )
+    }
+
     return (
         <table className="w-full text-md text-left text-gray-500 dark:text-gray-400">
             <thead className="text-md text-slate-50">
                 <tr>
                     <th scope="col" className="py-3 px-6 sticky top-0 bg-slate-400 dark:bg-cyan-800">
-                        Status
-                    </th>
-                    <th scope="col" className="py-3 px-6 sticky top-0 bg-slate-400 dark:bg-cyan-800">
                         Nombre
-                    </th>
-                    <th scope="col" className="py-3 px-6 sticky top-0 bg-slate-400 dark:bg-cyan-800">
-                        Errores
                     </th>
                     <th scope="col" className="py-3 px-6 sticky top-0 bg-slate-400 dark:bg-cyan-800">
                         Acciones
@@ -42,8 +49,9 @@ const ContentTable = ({ applications }: ContentTableProps) => {
                 </tr>
             </thead>
             <tbody>
-                {applications && applications.length && applications.map((i, index) =>
+                {applications && applications.length !== 0 && applications.map((i, index) =>
                     <tr key={index} className="bg-white border-b dark:border-b-cyan-900 dark:text-slate-50 transition ease-linear cursor-pointer hover:bg-slate-300 dark:hover:bg-cyan-700 dark:bg-cyan-900">
+                        <td className="py-4 px-6">{i.name}</td>
                         <td className="py-4 px-6">{i.name}</td>
                     </tr>
                 )}
@@ -53,14 +61,20 @@ const ContentTable = ({ applications }: ContentTableProps) => {
 }
 
 export const Table = () => {
-    const { currentProject, projectApplications } = useContext(RepositoryContext) as RepositoryContextType
+    const {
+        currentProject,
+        projectApplicationsFiltered
+    } = useContext(RepositoryContext) as RepositoryContextType
+
+    useEffect(() => {
+
+    }, [projectApplicationsFiltered])
 
     return (
         <div className="w-full h-full">
-            {!currentProject && !projectApplications?.length ?
-                <NoContentTable /> :
-                <ContentTable applications={projectApplications} />
-            }
+            {!currentProject && <NoContentTable />}
+
+            {currentProject && <ContentTable applications={projectApplicationsFiltered} />}
         </div>
     )
 }

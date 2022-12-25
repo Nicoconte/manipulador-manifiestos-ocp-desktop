@@ -13,18 +13,14 @@ export const normalizeRepositoryName = (name: string): string => {
 
 export const normalizeProjectBranches = (branches: string[], projectName: string): Application[] => {
     return branches.map(b => b.includes("remotes/origin") ? {
-        name: b.replace("remotes/origin/", ""),
-        origin: b.split("/")[1],
-        fullname: b
+        name: b.replace("remotes/origin/", "")
     } as Application : 
     {
-        name: b,
-        fullname: b,
-        origin: "local"
+        name: b
     } as Application).filter(c => c.name.toLowerCase().includes(projectName.toLowerCase()));
 }
 
-export const normalizeBranches = (branches: string[], projectName: string): Application[] => {
+export const normalizeBranches = (branches: string[]): Application[] => {
     return branches.map(b => b.includes("remotes/origin") ? {
         name: b.replace("remotes/origin/", ""),
         origin: b.split("/")[1],
@@ -34,5 +30,5 @@ export const normalizeBranches = (branches: string[], projectName: string): Appl
         name: b,
         fullname: b,
         origin: "local"
-    } as Application).filter(c => c.name.toLowerCase().includes(projectName.toLowerCase()));
+    } as Application);
 }

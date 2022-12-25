@@ -11,8 +11,8 @@ export const SideModal = ({ children }: SideModalProps) => {
 
     return (
         <div className={`${openSideModal ? "block" : "hidden"}`}>
-            <div className={`w-full flex flex-row-reverse bg-slate-400 bg-opacity-60 overflow-x-hidden overflow-y-auto fixed inset-0 z-40 outline-none focus:outline-none`}>
-                <div className="w-5/12 bg-slate-50">
+            <div className={`w-full flex flex-row-reverse bg-slate-500 bg-opacity-60 overflow-x-hidden overflow-y-auto fixed inset-0 z-40 outline-none focus:outline-none`}>
+                <div className="w-5/12 bg-slate-100">
                     {children}
                 </div>
                 <div className="w-1/12 h-full flex justify-end items-start">

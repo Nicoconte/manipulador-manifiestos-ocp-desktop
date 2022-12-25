@@ -24,9 +24,7 @@ export const MainContent = () => {
                         <ProjectSelector />
                     </div>
                     <div className="w-4/12 h-full flex flex-row justify-start items-center">
-                        <button onClick={handleOpenSideModal} className="h-8 w-8 rounded-full bg-blue-500 text-white flex justify-center items-center ml-10">
-                            <PlusIcon className="h-4" />
-                        </button>
+
                     </div>
                 </div>
             </div>

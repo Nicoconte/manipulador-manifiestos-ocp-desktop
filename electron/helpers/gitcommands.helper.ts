@@ -14,6 +14,7 @@ export interface GitCommandResponse {
     success: boolean,
     message: string,
     branches: string[],
+    status: string[]
 }
 
 export enum GitOperation {
@@ -26,7 +27,8 @@ export enum GitOperation {
     Commit = "commit",
     Checkout = "checkout",
     Pull = "pull",
-    Push = "push"
+    Push = "push",
+    Status = "status",
 }
 
 export const executeGitCommand: { [key: string]: (args: GitCommandArgs) => Promise<GitCommandResponse> } = {
@@ -174,6 +176,39 @@ export const executeGitCommand: { [key: string]: (args: GitCommandArgs) => Promi
         return {
             success: true,
             message: `Cambios enviados a la rama ${args.branch}`
+        } as GitCommandResponse        
+    },
+    "status": async (args: GitCommandArgs) : Promise<any> => {
+        if (!fs.existsSync(args.localPath)) {
+            return {
+                success: false,
+                message: "No se pudo enviar los cambios. El repositorio local no existe"
+            } as GitCommandResponse
+        }         
+
+        let status = await simpleGit(args.localPath).status();
+
+        if (status.isClean()) {
+            return {
+                success: true,
+                message: `No hay cambios en su repositorio`
+            } as GitCommandResponse             
+        }
+
+        let statusReturned = [];
+
+        if (status.conflicted.length > 0) {
+            statusReturned.push(`Hay conflicto en los siguientes archivos: ${status.conflicted.join("\n")}`)
+        }
+
+        if (status.modified.length > 0) {
+            statusReturned.push(`Hay cambios no guardados en los archivos: ${status.not_added.join("\n")}`)
+        }
+
+        return {
+            success: false,
+            message: `Detectamos problemas con su repositorio. Ver detalles para mas informacion`,
+            status: statusReturned
         } as GitCommandResponse        
     }
 }

@@ -8,5 +8,6 @@ export enum GitOperation {
     Commit = "commit",
     Checkout = "checkout",
     Pull = "pull",
-    Push = "push"
+    Push = "push",
+    Status = "status"
 }
