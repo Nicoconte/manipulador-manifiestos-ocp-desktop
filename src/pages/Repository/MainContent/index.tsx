@@ -1,18 +1,12 @@
 import React, { useContext } from "react";
 import { PlusIcon } from "@heroicons/react/24/outline";
-import { SideModal } from "../../../components/SideModal";
 import { GlobalContext, GlobalContextType } from "../../../context/GlobalContext";
 import { SearchForm } from "./Applications/SearchForm";
 import { Table } from "./Applications/Table";
 import { ProjectSelector } from "./Projects/ProjectSelector";
-import { CreateFormsContainer } from "../CreateFormsContainer";
 
 export const MainContent = () => {
-    const { setOpenSideModal } = useContext(GlobalContext) as GlobalContextType;
-
-    const handleOpenSideModal = () => {
-        setOpenSideModal(true);
-    }
+    const { handleOpenSideModal } = useContext(GlobalContext) as GlobalContextType;
 
     return (
         <div className="w-full" style={{ "height": "86%" }}>
@@ -25,7 +19,7 @@ export const MainContent = () => {
                         <ProjectSelector />
                     </div>
                     <div className="w-4/12 h-full flex flex-row justify-end items-center">
-                        <button title="Crear proyecto" onClick={handleOpenSideModal} className="h-10 w-24 rounded text-white text-md flex justify-center items-center bg-blue-500">
+                        <button title="Crear proyecto" onClick={() => handleOpenSideModal("create-app-project-container")} className="h-10 w-24 rounded text-white text-md flex justify-center items-center bg-blue-500">
                             <PlusIcon className="h-6 mr-1" /> Crear
                         </button>
                     </div>
@@ -36,10 +30,6 @@ export const MainContent = () => {
                     <Table />
                 </div>
             </div>
-
-            <SideModal>
-                <CreateFormsContainer />
-            </SideModal>
         </div>
     )
 }

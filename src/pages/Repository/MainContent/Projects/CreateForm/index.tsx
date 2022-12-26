@@ -1,5 +1,5 @@
 import { MinusIcon } from "@heroicons/react/24/outline";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { ProjectService } from "../../../../../api/services/project.service";
 import { GlobalContext, GlobalContextType } from "../../../../../context/GlobalContext";
@@ -7,9 +7,8 @@ import { RepositoryContext, RepositoryContextType } from "../../../../../context
 import { getPocketbaseErrorMessage } from "../../../../../helpers/pocketbase.helper";
 
 export const CreateForm = () => {
-    const { setOpenSideModal } = useContext(GlobalContext) as GlobalContextType;
-
     const { repository, setProjects, projects } = useContext(RepositoryContext) as RepositoryContextType;
+    const { handleCloseSideModal } = useContext(GlobalContext) as GlobalContextType;
 
     const [projectName, setProjectName] = useState<string>("");
 
@@ -44,12 +43,8 @@ export const CreateForm = () => {
             toast.error(getPocketbaseErrorMessage(err))
         })
         .finally(() => {
-            handleClose();          
+            handleCloseSideModal();          
         });
-    }
-
-    const handleClose = () => {
-        setOpenSideModal(false);        
     }
 
     return (
@@ -75,7 +70,7 @@ export const CreateForm = () => {
                 <button onClick={handleCreateProject} className="w-5/12 h-8 rounded transition ease-linear bg-blue-500 hover:bg-blue-700">
                     Guardar
                 </button>
-                <button className="w-5/12 h-8 rounded transition ease-linear bg-slate-500 hover:bg-slate-700" onClick={handleClose}>
+                <button className="w-5/12 h-8 rounded transition ease-linear bg-slate-500 hover:bg-slate-700" onClick={handleCloseSideModal}>
                     Cancelar
                 </button>
             </div>

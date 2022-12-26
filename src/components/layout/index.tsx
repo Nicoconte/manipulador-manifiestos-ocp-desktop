@@ -3,6 +3,7 @@ import React, { useContext, useEffect } from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import { SettingContext, SettingContextType } from "../../context/SettingContext";
 import { LoadingSpinner } from "../LoadingSpinner";
+import { SideModal } from "../SideModal";
 import { ToggleTheme } from "../ToggleTheme";
 
 type MainLayoutProps = {

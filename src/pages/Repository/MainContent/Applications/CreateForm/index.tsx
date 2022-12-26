@@ -10,8 +10,8 @@ import { useGitCommand } from "../../../../../hooks/useGitCommands";
 export const CreateForm = () => {
     const { git } = useGitCommand();
 
-    const { repository, setHasError } = useContext(RepositoryContext) as RepositoryContextType;
-    const { setOpenSideModal, setIsLoading } = useContext(GlobalContext) as GlobalContextType;
+    const { repository, hasError } = useContext(RepositoryContext) as RepositoryContextType;
+    const { handleCloseSideModal, setIsLoading } = useContext(GlobalContext) as GlobalContextType;
 
     const [applications, setApplications] = useState<string[]>([]);
     const [applicationName, setApplicationName] = useState<string>("");
@@ -53,11 +53,8 @@ export const CreateForm = () => {
         try {
             setIsLoading(true);
     
-            let statusResponse = await git(GitOperation.Status, { localPath:repository?.fullPath} as GitCommandArgs);
-    
-            if (!statusResponse.success) {
+            if (hasError) {
                 toast.error("El repositorio tiene problemas. Vuelva al menus y vea con detalle que esta pasando.");
-                setHasError(!statusResponse.success);
                 setIsLoading(false);
                 return;
             }
@@ -80,12 +77,9 @@ export const CreateForm = () => {
         }
 
         setIsLoading(false);
-        handleClose();        
+        handleCloseSideModal();        
     }
 
-    const handleClose = () => {
-        setOpenSideModal(false);
-    }
 
     return (
         <div className="w-full h-full flex flex-col justify-center items-center">
@@ -108,22 +102,25 @@ export const CreateForm = () => {
                 </select>
 
                 <span className="mt-7 font-medium">
-                    <span className="font-bold">Referencia</span>: <span className="text-slate-500">
-                        Representa la rama del repositorio Github en donde se almacen los manifiestos.
+                    <span className="font-bold">Referencia</span>: 
+                    <span className="text-slate-500 ml-1">
+                        Representa la rama del repositorio en donde se almacen los manifiestos.
                     </span>
                 </span>
                 <span className="text-slate-500 font-medium text-left mt-4">
-                    <MinusIcon className="h-4" /> Ejemplo, la aplicacion "test" hara referencia a la rama "test" de Github, donde se encuentran los manifiestos.
-                </span>
-                <span className="text-slate-500 font-medium text-left mt-4">
-                    <MinusIcon className="h-4" /> Aclaracion, las ramas de github deben tener el mismo nombre que la aplicacion publicada
+                    <MinusIcon className="h-4" /> 
+                    <span className="font-bold text-black">Aclaracion:</span> 
+                    <span className="ml-1">
+                        Las ramas del repositorio deben tener el mismo nombre que la aplicacion publicada. 
+                        Recomendados la siguiente convencion '{"{proyecto}-{aplicacion}-{entorno}"}', <br />Ejemplo: notificaciones-backend-qa
+                    </span>
                 </span>
             </div>
             <div className="w-11/12 h-1/6 flex flex-row justify-evenly items-start text-white">
                 <button onClick={handleCreateApplication} className="w-5/12 h-8 rounded transition ease-linear bg-blue-500 hover:bg-blue-700">
                     Guardar
                 </button>
-                <button className="w-5/12 h-8 rounded transition ease-linear bg-slate-500 hover:bg-slate-700" onClick={handleClose}>
+                <button className="w-5/12 h-8 rounded transition ease-linear bg-slate-500 hover:bg-slate-700" onClick={handleCloseSideModal}>
                     Cancelar
                 </button>
             </div>

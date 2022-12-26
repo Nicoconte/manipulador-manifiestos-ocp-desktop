@@ -1,26 +1,11 @@
-import { ArrowLeftIcon, ArrowPathIcon, CheckCircleIcon, Cog8ToothIcon, ExclamationCircleIcon, GlobeAltIcon, PlusIcon } from "@heroicons/react/24/outline";
+import { ArrowLeftIcon, ArrowPathIcon, CheckCircleIcon, Cog8ToothIcon, ExclamationCircleIcon  } from "@heroicons/react/24/outline";
 import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { SideModal } from "../../../components/SideModal";
-import { GlobalContext, GlobalContextType } from "../../../context/GlobalContext";
 import { RepositoryContext, RepositoryContextType } from "../../../context/RepositoryContext";
-import { GitOperation } from "../../../data/enums/git.enum";
-import { GitCommandArgs } from "../../../data/interfaces/git.interface";
-import { useGitCommand } from "../../../hooks/useGitCommands";
-import { CreateForm } from "../MainContent/Projects/CreateForm";
+
 
 export const UpperMenu = () => {
-    const { repository, hasError, setHasError } = useContext(RepositoryContext) as RepositoryContextType;
-
-    const { git } = useGitCommand();
-
-    const checkStatus = async () => {
-        let status = await git(GitOperation.Status, {
-            localPath: repository?.fullPath
-        } as GitCommandArgs);
-
-        setHasError(!status.success);
-    }
+    const { repository, hasError, checkRepositoryStatus } = useContext(RepositoryContext) as RepositoryContextType;
 
     const openGithubUrl = () => {
         if (repository) {
@@ -30,7 +15,7 @@ export const UpperMenu = () => {
 
     useEffect(() => {
         if (repository) {
-            checkStatus();
+            checkRepositoryStatus();
         }
     }, [repository, hasError])
 
