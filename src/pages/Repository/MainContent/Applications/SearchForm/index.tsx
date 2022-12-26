@@ -24,7 +24,7 @@ export const SearchForm = () => {
             <input
                 ref={inputRef}
                 type={"text"} 
-                className="px-4 text-sm placeholder:text-slate-400 outline-none focus:outline-none appearance-none rounded-3xl h-9 shadow-md" 
+                className="px-4 text-sm placeholder:text-slate-400 outline-none focus:outline-none appearance-none rounded-3xl h-10 shadow-md" 
                 placeholder="Nombre aplicacion"
                 style={{width: "95%"}}
                 onChange={(e) => onInputChange(e.target.value)}

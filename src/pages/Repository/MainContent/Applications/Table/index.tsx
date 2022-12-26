@@ -1,8 +1,7 @@
 import { ArchiveBoxXMarkIcon, CloudArrowDownIcon, PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { RepositoryContext, RepositoryContextType } from "../../../../../context/RepositoryContext";
 import { Application } from "../../../../../data/interfaces/application.interface";
-
 
 const NoContentTable = () => {
     return (
@@ -38,12 +37,12 @@ const ContentTable = ({ applications }: ContentTableProps) => {
 
     return (
         <table className="w-full table-fixed text-md text-left text-gray-500 dark:text-gray-400">
-            <thead className="text-md w-full text-slate-50 bg-slate-400 dark:bg-cyan-800">
+            <thead className="text-md w-full text-slate-50">
                 <tr>
-                    <th scope="col" className="w-9/12 py-3 px-6 sticky top-0">
+                    <th scope="col" className="w-9/12 py-3 px-6 sticky top-0 bg-slate-400 dark:bg-cyan-800">
                         Nombre
                     </th>
-                    <th scope="col" className="w-3/12 py-3 px-6 sticky top-0">
+                    <th scope="col" className="w-3/12 py-3 px-6 sticky top-0 bg-slate-400 dark:bg-cyan-800">
                         Acciones
                     </th>
                 </tr>
@@ -75,10 +74,6 @@ export const Table = () => {
         currentProject,
         projectApplicationsFiltered
     } = useContext(RepositoryContext) as RepositoryContextType
-
-    useEffect(() => {
-
-    }, [projectApplicationsFiltered])
 
     return (
         <div className="w-full h-full">

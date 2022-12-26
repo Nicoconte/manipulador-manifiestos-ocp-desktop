@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { GitOperation } from "../data/enums/git.enum";
 import { Application } from "../data/interfaces/application.interface";
 import { GitRepository } from "../data/interfaces/gitRepository.interface";
 import { Project } from "../data/interfaces/project.interface";
@@ -16,6 +15,8 @@ export type RepositoryContextType = {
     setHasError: (value: boolean) => void,
     projectApplicationsFiltered: Application[] | undefined,
     setProjectApplicationsFiltered: (value: Application[]) => void,
+    projects: Project[],
+    setProjects: (value: Project[]) => void
 }
 
 const RepositoryContext = React.createContext<RepositoryContextType | null>(null);
@@ -24,13 +25,13 @@ const RepositoryProvider: React.FC<React.ReactNode> = ({ children }) => {
     const { repository: localStorageRepo } = useGitRepository();
 
     const [repository, setRepository] = useState<GitRepository>();    
-
-    const [ hasError, setHasError ] = useState<boolean>(false);
+    const [projects, setProjects] = useState<Project[]>([]);
+    const [projectApplications, setProjectApplications] = useState<Application[]>([]);
 
     const [currentProject, setCurrentProject] = useState<Project>();
-
     const [projectApplicationsFiltered, setProjectApplicationsFiltered] = useState<Application[]>([]);
-    const [projectApplications, setProjectApplications] = useState<Application[]>([]);
+    
+    const [ hasError, setHasError ] = useState<boolean>(false);
 
     useEffect(() => {
         if (localStorageRepo) {
@@ -49,7 +50,9 @@ const RepositoryProvider: React.FC<React.ReactNode> = ({ children }) => {
             hasError,
             setHasError,
             projectApplicationsFiltered,
-            setProjectApplicationsFiltered
+            setProjectApplicationsFiltered,
+            projects,
+            setProjects
         }}>
             {children}
         </RepositoryContext.Provider>

@@ -4,7 +4,6 @@ import { GlobalContext, GlobalContextType } from "../../../../../context/GlobalC
 import { RepositoryContext, RepositoryContextType } from "../../../../../context/RepositoryContext";
 import { GitOperation } from "../../../../../data/enums/git.enum";
 import { GitCommandArgs } from "../../../../../data/interfaces/git.interface";
-import { Project } from "../../../../../data/interfaces/project.interface";
 import { normalizeProjectBranches } from "../../../../../helpers/git.helper";
 import { useGitCommand } from "../../../../../hooks/useGitCommands";
 
@@ -14,12 +13,13 @@ export const ProjectSelector = () => {
     const { setIsLoading } = useContext(GlobalContext) as GlobalContextType;
     const { 
         repository, 
+        currentProject,
         setCurrentProject, 
         setProjectApplications,
-        setProjectApplicationsFiltered
+        setProjectApplicationsFiltered,
+        projects,
+        setProjects
     } = useContext(RepositoryContext) as RepositoryContextType;
-    
-    const [projects, setProjects] = useState<Project[]>([]);
 
     useEffect(() => {
         if (!projects.length && repository) {
@@ -28,6 +28,7 @@ export const ProjectSelector = () => {
             })
         }
     }, [repository])
+
 
     const handleProjectSelected = async (name: string) => {
         
@@ -42,9 +43,10 @@ export const ProjectSelector = () => {
         if (!project) {
             setProjectApplications([]);
             setProjectApplicationsFiltered([]);   
-
             return;
         }
+
+        setCurrentProject(project);        
         
         setIsLoading(true);
         
@@ -52,12 +54,14 @@ export const ProjectSelector = () => {
 
         let allBranches = normalizeProjectBranches((await git(GitOperation.ListAllBranches, args)).branches, name);
 
-        console.log(allBranches);
-
         if (!allBranches.length) {
             setIsLoading(false);
+            setProjectApplications([]); 
+            setProjectApplicationsFiltered([]);               
             return;
         }
+
+        console.log("Buscando ramas locales");
 
         let localBranches = (await git(GitOperation.ListLocalBranches, args)).branches;        
 
@@ -75,15 +79,13 @@ export const ProjectSelector = () => {
         
         setProjectApplications(lastestLocalBranches);
         setProjectApplicationsFiltered(lastestLocalBranches);
- 
-        setCurrentProject(project)
 
         setIsLoading(false);
     }
 
     return (
         <div className="w-full h-full flex justify-start items-center">
-            <select onChange={(e) => handleProjectSelected(e.target.value)} className="text-slate-400 text-sm rounded-3xl h-9 px-4 w-full outline-none focus:outline-none appearance-none shadow-md">
+            <select onChange={(e) => handleProjectSelected(e.target.value)} className="text-slate-400 text-sm rounded-3xl h-10 px-4 w-full outline-none focus:outline-none appearance-none shadow-md">
                 <option value={""} selected>Seleccione proyecto</option>
                 { projects.length && projects.map((p, i) => (
                   <option className="text-slate-900" key={i} defaultValue={p.name}>{p.name}</option>  
