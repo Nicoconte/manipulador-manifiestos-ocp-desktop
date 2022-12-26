@@ -13,10 +13,16 @@ export const CreateFormsContainer = () => {
     return (
         <div className="w-full h-full flex flex-col">
             <div className="w-full flex flex-row text-lg bg-slate-400 text-slate-50" style={{height: "7%"}}>
-                <button onClick={() => setActiveForm("create-project-form")} className="w-6/12 h-full flex justify-center items-center font-medium transition ease-linear hover:bg-slate-200 hover:text-slate-600">
+                <button 
+                    onClick={() => setActiveForm("create-project-form")} 
+                    className={`${activeForm === "create-project-form" ? "underline" : ""} w-6/12 h-full flex justify-center items-center font-medium transition ease-linear hover:bg-slate-200 hover:text-slate-600`}
+                >
                     Proyecto
                 </button>
-                <button onClick={() => setActiveForm("create-app-form")} className="w-6/12 h-full flex justify-center items-center font-medium transition ease-linear hover:bg-slate-200 hover:text-slate-600">
+                <button 
+                    onClick={() => setActiveForm("create-app-form")} 
+                    className={`${activeForm === "create-app-form" ? "underline" : ""} w-6/12 text- h-full flex justify-center items-center font-medium transition ease-linear hover:bg-slate-200 hover:text-slate-600`}
+                >
                     Aplicacion
                 </button>                
             </div>

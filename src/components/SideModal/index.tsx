@@ -2,13 +2,14 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import React, { useContext } from "react";
 import { GlobalContext, GlobalContextType } from "../../context/GlobalContext";
 import { CreateFormsContainer } from "../../pages/Repository/CreateFormsContainer";
+import { NotFound } from "../Error";
 
 export const SideModal = () => {
     const { openSideModal, handleCloseSideModal, sideModalChild } = useContext(GlobalContext) as GlobalContextType;
 
     const content: any = {
         "create-app-project-container": <CreateFormsContainer />,
-        "*": <h1>Ups...</h1>
+        "*": <NotFound />
     }
 
     return (

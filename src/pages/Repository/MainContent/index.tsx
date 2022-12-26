@@ -21,7 +21,7 @@ export const MainContent = () => {
                     <div className="w-4/12 h-full flex flex-row justify-end items-center">
                         <button title="Crear proyecto" onClick={() => handleOpenSideModal("create-app-project-container")} className="h-10 w-24 rounded text-white text-md flex justify-center items-center bg-blue-500">
                             <PlusIcon className="h-6 mr-1" /> Crear
-                        </button>
+                        </button>                                                   
                     </div>
                 </div>
             </div>

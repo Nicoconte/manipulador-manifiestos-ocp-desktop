@@ -17,3 +17,14 @@ export const Error = () => {
         </div>
     )
 }
+
+export const NotFound = () => {
+    return (
+        <div className="w-full h-full flex flex-col justify-center items-center">
+            <ExclamationCircleIcon className="w-20 h-20" />
+            <h1 className="text-xl text-slate-600 font-bold mt-5">
+                No pudimos encontrar la vista requerida
+            </h1>
+        </div>
+    )
+}
