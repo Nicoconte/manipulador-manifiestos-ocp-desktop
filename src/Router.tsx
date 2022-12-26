@@ -5,20 +5,22 @@ import {
 } from "react-router-dom";
 
 import { Home } from "./pages/Home";
-import { NotFound } from "./pages/NotFound";
+import { Error } from "./pages/Error";
 import { Repository } from "./pages/Repository";
   
 export const router = createBrowserRouter([
     {
       path: "/",
       element: <Home />,
+      errorElement: <Error />
     },
     {
         path: "/repository/:name",
-        element: <Repository />
+        element: <Repository />,
+        errorElement: <Error />        
     },
     {
         path: "*",
-        element: <NotFound />
+        element: <Error />
     }
 ]);

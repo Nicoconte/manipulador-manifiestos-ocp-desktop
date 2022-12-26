@@ -33,7 +33,7 @@ export const ProjectSelector = () => {
         
         if (name === "") {
             setCurrentProject(undefined);
-            setProjectApplications([]);
+            setProjectApplications([]); 
             return;
         }
         
@@ -51,6 +51,8 @@ export const ProjectSelector = () => {
         let args = { localPath: repository?.fullPath } as GitCommandArgs;
 
         let allBranches = normalizeProjectBranches((await git(GitOperation.ListAllBranches, args)).branches, name);
+
+        console.log(allBranches);
 
         if (!allBranches.length) {
             setIsLoading(false);

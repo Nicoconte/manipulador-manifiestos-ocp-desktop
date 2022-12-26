@@ -29,6 +29,7 @@ export enum GitOperation {
     Pull = "pull",
     Push = "push",
     Status = "status",
+    Diff = "diff"
 }
 
 export const executeGitCommand: { [key: string]: (args: GitCommandArgs) => Promise<GitCommandResponse> } = {
@@ -71,7 +72,7 @@ export const executeGitCommand: { [key: string]: (args: GitCommandArgs) => Promi
         }                
 
         let branches = await simpleGit(args.localPath).branch();
-        
+ 
         return {
             success: true,
             branches: branches.all
@@ -209,6 +210,22 @@ export const executeGitCommand: { [key: string]: (args: GitCommandArgs) => Promi
             success: false,
             message: `Detectamos problemas con su repositorio. Ver detalles para mas informacion`,
             status: statusReturned
+        } as GitCommandResponse        
+    },
+    "diff": async (args: GitCommandArgs) : Promise<any> => {
+        if (!fs.existsSync(args.localPath)) {
+            return {
+                success: false,
+                message: "No se pudo enviar los cambios. El repositorio local no existe"
+            } as GitCommandResponse
+        }         
+        let diff = await simpleGit(args.localPath).diff([args.branch]);
+
+        let hasDiff = diff.length > 0;
+
+        return {
+            success: hasDiff,
+            message: hasDiff ? `Descargue los ultimos cambios` : "Su rama esta al dia con la rama remota"
         } as GitCommandResponse        
     }
 }

@@ -9,5 +9,6 @@ export enum GitOperation {
     Checkout = "checkout",
     Pull = "pull",
     Push = "push",
-    Status = "status"
+    Status = "status",
+    Diff = "diff"
 }
