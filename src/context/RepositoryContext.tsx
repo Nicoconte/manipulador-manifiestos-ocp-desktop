@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { GitOperation } from "../data/enums/git.enum";
 import { Application } from "../data/interfaces/application.interface";
-import { GitCommandArgs } from "../data/interfaces/git.interface";
+import { GitCommandArgs, GitStatusReponse } from "../data/interfaces/git.interface";
 import { GitRepository } from "../data/interfaces/gitRepository.interface";
 import { Project } from "../data/interfaces/project.interface";
 import { useGitCommand } from "../hooks/useGitCommands";
@@ -16,7 +16,7 @@ export type RepositoryContextType = {
     setProjectApplications: (value: Application[]) => void,
     hasError: boolean,
     checkRepositoryStatus: () => void,
-    errorMessages: string[],
+    errorMessages: GitStatusReponse[],
     projectApplicationsFiltered: Application[] | undefined,
     setProjectApplicationsFiltered: (value: Application[]) => void,
     projects: Project[],
@@ -38,7 +38,7 @@ const RepositoryProvider: React.FC<React.ReactNode> = ({ children }) => {
     const [projectApplicationsFiltered, setProjectApplicationsFiltered] = useState<Application[]>([]);
     
     const [hasError, setHasError] = useState<boolean>(false);
-    const [errorMessages, setErrorMessages] = useState<string[]>([]);
+    const [errorMessages, setErrorMessages] = useState<GitStatusReponse[]>([]);
 
     useEffect(() => {
         if (localStorageRepo) {

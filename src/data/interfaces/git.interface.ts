@@ -10,5 +10,10 @@ export interface GitCommandResponse {
     success: boolean,
     message: string,
     branches: string[],
-    status: string[]
+    status: GitStatusReponse[]
+}
+
+export interface GitStatusReponse {
+    status: string,
+    files: string[]
 }

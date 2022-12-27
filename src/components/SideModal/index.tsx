@@ -2,6 +2,7 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import React, { useContext } from "react";
 import { GlobalContext, GlobalContextType } from "../../context/GlobalContext";
 import { CreateFormsContainer } from "../../pages/Repository/CreateFormsContainer";
+import { IssueReporter } from "../../pages/Repository/IssueReporter";
 import { NotFound } from "../Error";
 
 export const SideModal = () => {
@@ -9,6 +10,7 @@ export const SideModal = () => {
 
     const content: any = {
         "create-app-project-container": <CreateFormsContainer />,
+        "repo-issue-reporter": <IssueReporter />,
         "*": <NotFound />
     }
 

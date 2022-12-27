@@ -14,7 +14,7 @@ export interface GitCommandResponse {
     success: boolean,
     message: string,
     branches: string[],
-    status: string[]
+    status: GitStatusReponse[]
 }
 
 export enum GitOperation {
@@ -30,6 +30,11 @@ export enum GitOperation {
     Push = "push",
     Status = "status",
     Diff = "diff"
+}
+
+export interface GitStatusReponse {
+    status: string,
+    files: string[]
 }
 
 export const executeGitCommand: { [key: string]: (args: GitCommandArgs) => Promise<GitCommandResponse> } = {
@@ -192,18 +197,31 @@ export const executeGitCommand: { [key: string]: (args: GitCommandArgs) => Promi
         if (status.isClean()) {
             return {
                 success: true,
-                message: `No hay cambios en su repositorio`
+                message: ""
             } as GitCommandResponse             
         }
 
-        let statusReturned = [];
+        let statusReturned: GitStatusReponse[] = [];
 
         if (status.conflicted.length > 0) {
-            statusReturned.push(`Hay conflicto en los siguientes archivos: ${status.conflicted.join("\n")}`)
+            statusReturned.push({
+                status: "Conflicto",
+                files: status.conflicted
+            } as GitStatusReponse);
         }
 
         if (status.modified.length > 0) {
-            statusReturned.push(`Hay cambios no guardados en los archivos: ${status.not_added.join("\n")}`)
+            statusReturned.push({
+                status: "Modificado",
+                files: status.modified
+            } as GitStatusReponse);
+        }
+
+        if (status.not_added.length > 0) {
+            statusReturned.push({
+                status: "No añadido",
+                files: status.modified
+            } as GitStatusReponse);
         }
 
         return {
