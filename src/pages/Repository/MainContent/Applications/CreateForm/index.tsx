@@ -95,7 +95,7 @@ export const CreateForm = () => {
                 />
                 <select onChange={(e) => handleApplicationSelected(e.target.value)} className="text-slate-400 text-md rounded mt-5 h-10 px-4 w-full outline-none focus:outline-none appearance-none shadow-md">
                     {applications.length && applications.map((a, i) => (
-                        <option className="text-slate-900" key={i} defaultValue={a}>
+                        <option className="text-slate-900" key={i} value={a}>
                             Basado en {a}
                         </option>
                     ))}

@@ -2,13 +2,19 @@ import React, { useContext, useEffect, useState } from "react";
 import { ProjectService } from "../../../../../api/services/project.service";
 import { GlobalContext, GlobalContextType } from "../../../../../context/GlobalContext";
 import { RepositoryContext, RepositoryContextType } from "../../../../../context/RepositoryContext";
+import { FileSystemOperation } from "../../../../../data/enums/fs.enum";
 import { GitOperation } from "../../../../../data/enums/git.enum";
+import { Application } from "../../../../../data/interfaces/application.interface";
+import { FileSystemArgs } from "../../../../../data/interfaces/fs.interface";
 import { GitCommandArgs } from "../../../../../data/interfaces/git.interface";
 import { normalizeProjectBranches } from "../../../../../helpers/git.helper";
+import { getValueByKey } from "../../../../../helpers/object.helper";
+import { useFileSystem } from "../../../../../hooks/useFileSystem";
 import { useGitCommand } from "../../../../../hooks/useGitCommands";
 
 export const ProjectSelector = () => {
     const { git } = useGitCommand();
+    const { fs } = useFileSystem();
 
     const { setIsLoading } = useContext(GlobalContext) as GlobalContextType;
     const { 
@@ -61,9 +67,7 @@ export const ProjectSelector = () => {
             return;
         }
 
-        console.log("Buscando ramas locales");
-
-        let localBranches = (await git(GitOperation.ListLocalBranches, args)).branches;        
+        let localBranches = (await git(GitOperation.ListLocalBranches, args)).branches;
 
         for (let branch of allBranches) {
             if (!localBranches.includes(branch.name)) {
@@ -76,6 +80,24 @@ export const ProjectSelector = () => {
         }
 
         let lastestLocalBranches = normalizeProjectBranches((await git(GitOperation.ListLocalBranches, args)).branches, name);
+
+        for(let branchAsApp of lastestLocalBranches) {
+            await git(GitOperation.Checkout, {
+                localPath: repository?.fullPath,
+                branch: branchAsApp.name
+            } as GitCommandArgs);
+
+            let yaml = await fs(FileSystemOperation.ReadYaml, {
+                path: `${repository?.fullPath}/values.yaml`
+            } as FileSystemArgs);
+
+            let manifest: any = yaml.response;
+
+            branchAsApp.replicas = getValueByKey(manifest, "replicacontroller.replicas");
+            branchAsApp.isLogging = getValueByKey(manifest, "clusterlogging");
+            branchAsApp.manifestPath = `${repository?.fullPath}/values.yaml`;
+            branchAsApp.manifestContent = manifest;
+        }
         
         setProjectApplications(lastestLocalBranches);
         setProjectApplicationsFiltered(lastestLocalBranches);
@@ -85,7 +107,7 @@ export const ProjectSelector = () => {
 
     return (
         <div className="w-full h-full flex justify-start items-center">
-            <select onChange={(e) => handleProjectSelected(e.target.value)} className="text-slate-400 text-sm rounded-3xl h-10 px-4 w-full outline-none focus:outline-none appearance-none shadow-md">
+            <select onChange={(e) => handleProjectSelected(e.target.value)} className ="text-slate-400 text-sm rounded-3xl h-10 px-4 w-full outline-none focus:outline-none appearance-none shadow-md">
                 <option value={""} selected>Seleccione proyecto</option>
                 { projects.length && projects.map((p, i) => (
                   <option className="text-slate-900" key={i} defaultValue={p.name}>{p.name}</option>  

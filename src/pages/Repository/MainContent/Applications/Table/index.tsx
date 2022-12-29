@@ -1,7 +1,10 @@
-import { ArchiveBoxXMarkIcon, ArrowPathIcon, CheckBadgeIcon, CloudArrowDownIcon, EyeIcon, PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
-import React, { useContext } from "react";
+import { ArchiveBoxXMarkIcon, ArrowPathIcon, CheckBadgeIcon, PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
+import React, { useContext, useEffect } from "react";
+import { useUID } from "react-uid";
+import { useUIDSeed } from "react-uid/dist/es5/hooks";
 import { RepositoryContext, RepositoryContextType } from "../../../../../context/RepositoryContext";
 import { Application } from "../../../../../data/interfaces/application.interface";
+import { ClusterLoggingToggle } from "./ClusterLoggingToggle";
 
 const NoContentTable = () => {
     return (
@@ -21,6 +24,8 @@ type ContentTableProps = {
     applications: Application[] | undefined;
 }
 const ContentTable = ({ applications }: ContentTableProps) => {
+    const seed = useUIDSeed();
+
     if (applications?.length === 0) {
         return (
             <table className="w-full text-md text-left text-gray-500 dark:text-gray-400">
@@ -45,11 +50,14 @@ const ContentTable = ({ applications }: ContentTableProps) => {
                     <th scope="col" className="w-5/12 py-3 px-6 sticky top-0 bg-slate-400 dark:bg-cyan-800">
                         Nombre
                     </th>
+                    <th scope="col" className="w-2/12 py-3 px-6 sticky top-0 bg-slate-400 dark:bg-cyan-800 text-center">
+                        Logging
+                    </th>
                     <th scope="col" className="w-2/12 py-3 px-6 sticky top-0 bg-slate-400 dark:bg-cyan-800">
                         Replicas
                     </th>                    
-                    <th scope="col" className="w-4/12 py-3 px-6 sticky top-0 bg-slate-400 dark:bg-cyan-800">
-                        Acciones
+                    <th scope="col" className="w-3/12 py-3 px-6 sticky top-0 bg-slate-400 dark:bg-cyan-800">
+                        <span className="ml-8">Acciones</span>
                     </th>
                 </tr>
             </thead>
@@ -59,9 +67,14 @@ const ContentTable = ({ applications }: ContentTableProps) => {
                         <td className="py-4 px-6">
                             <CheckBadgeIcon className="h-5" />
                         </td>
-                        <td className="py-4 px-6">{i.name}</td>
                         <td className="py-4 px-6">
-                            <input type="number" value="0" className="w-6/12" />
+                            {i.name}
+                        </td>
+                        <td className="py-4 px-6">
+                            <ClusterLoggingToggle key={seed(i)} app={i} />
+                        </td>
+                        <td className="py-4 px-6">
+                            <input type="number" className="text-center" defaultValue={i.replicas} min="0" max="10" />
                         </td>                        
                         <td className="py-4 px-6 flex justify-start items-center">
                             <button className="text-blue-500 hover:text-blue-700 transition ease-linear w-8 h-8 rounded flex justify-center items-center">
@@ -69,10 +82,7 @@ const ContentTable = ({ applications }: ContentTableProps) => {
                             </button>
                             <button className="text-purple-500 hover:text-purple-700 transition ease-linear ml-3 w-8 h-8 rounded flex justify-center items-center">
                                 <ArrowPathIcon className="h-6" />
-                            </button>   
-                            <button className="text-pink-500 hover:text-pink-700 transition ease-linear ml-3  w-8 h-8 rounded flex justify-center items-center">
-                                <EyeIcon className="h-6" />
-                            </button>                             
+                            </button>                               
                             <button className="text-red-500 hover:text-red-700 transition ease-linear ml-3 w-8 h-8 rounded flex justify-center items-center">
                                 <TrashIcon className="h-6" />
                             </button>                                                        
@@ -87,13 +97,12 @@ const ContentTable = ({ applications }: ContentTableProps) => {
 export const Table = () => {
     const {
         currentProject,
-        projectApplicationsFiltered
+        projectApplicationsFiltered,
     } = useContext(RepositoryContext) as RepositoryContextType
 
     return (
         <div className="w-full h-full">
             {!currentProject && <NoContentTable />}
-
             {currentProject && <ContentTable applications={projectApplicationsFiltered} />}
         </div>
     )

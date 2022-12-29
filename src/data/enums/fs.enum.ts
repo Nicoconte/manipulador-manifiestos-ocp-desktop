@@ -1,3 +1,5 @@
 export enum FileSystemOperation {
-    pathExist = "pathExist"
+    PathExist = "pathExist",
+    ReadYaml = "readYaml",
+    WriteYaml = "writeYaml"
 }

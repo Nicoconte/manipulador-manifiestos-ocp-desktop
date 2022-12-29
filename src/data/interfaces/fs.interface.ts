@@ -1,6 +1,7 @@
 export interface FileSystemArgs {
     path: string,
-    newPath: string
+    newPath: string,
+    fileContent: any
 }
 
 export interface FileSystemResponse {

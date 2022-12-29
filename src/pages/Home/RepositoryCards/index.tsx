@@ -31,10 +31,10 @@ export const GitRepositoryCards = ({ repository }: GitRepositoryCardsProps) => {
     const navigator = useNavigate();
 
     useEffect(() => {
-        fs(FileSystemOperation.pathExist, {
+        fs(FileSystemOperation.PathExist, {
             path: globalSetting?.local_path_to_repositories.concat("/", repository.name)
         } as FileSystemArgs).then(res => {
-            setHasLocalRepository(res.response)
+            setHasLocalRepository(res.success);
         })
     }, [])
 
@@ -45,9 +45,9 @@ export const GitRepositoryCards = ({ repository }: GitRepositoryCardsProps) => {
             path: globalSetting?.local_path_to_repositories.concat("/", repository.name)
         } as FileSystemArgs;
 
-        let pathExistResponse = await fs(FileSystemOperation.pathExist, pathOptions);
+        let pathExistResponse = await fs(FileSystemOperation.PathExist, pathOptions);
 
-        if (!pathExistResponse.response) {
+        if (!pathExistResponse.success) {
             setIsLoading(false);
 
             toast.warning("Debe clonar este repositorio antes de trabajar con el");
