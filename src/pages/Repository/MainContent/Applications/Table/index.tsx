@@ -1,10 +1,10 @@
 import { ArchiveBoxXMarkIcon, ArrowPathIcon, CheckBadgeIcon, PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
-import React, { useContext, useEffect } from "react";
-import { useUID } from "react-uid";
-import { useUIDSeed } from "react-uid/dist/es5/hooks";
+import React, { useContext } from "react";
 import { RepositoryContext, RepositoryContextType } from "../../../../../context/RepositoryContext";
 import { Application } from "../../../../../data/interfaces/application.interface";
 import { ClusterLoggingToggle } from "./ClusterLoggingToggle";
+
+import { uid } from "react-uid";
 
 const NoContentTable = () => {
     return (
@@ -24,8 +24,6 @@ type ContentTableProps = {
     applications: Application[] | undefined;
 }
 const ContentTable = ({ applications }: ContentTableProps) => {
-    const seed = useUIDSeed();
-
     if (applications?.length === 0) {
         return (
             <table className="w-full text-md text-left text-gray-500 dark:text-gray-400">
@@ -62,19 +60,19 @@ const ContentTable = ({ applications }: ContentTableProps) => {
                 </tr>
             </thead>
             <tbody>
-                {applications && applications.length !== 0 && applications.map((i, index) =>
+                {applications && applications.length !== 0 && applications.map((app, index) =>
                     <tr key={index} className="bg-white border-b dark:border-b-cyan-900 dark:text-slate-50 transition ease-linear hover:bg-slate-100 dark:hover:bg-cyan-700 dark:bg-cyan-900">
                         <td className="py-4 px-6">
                             <CheckBadgeIcon className="h-5" />
                         </td>
                         <td className="py-4 px-6">
-                            {i.name}
+                            {app.name}
                         </td>
                         <td className="py-4 px-6">
-                            <ClusterLoggingToggle key={seed(i)} app={i} />
+                            <ClusterLoggingToggle key={uid(app)} app={app} />
                         </td>
                         <td className="py-4 px-6">
-                            <input type="number" className="text-center" defaultValue={i.replicas} min="0" max="10" />
+                            <input type="number" className="text-center" defaultValue={app.replicas} min="0" max="10" />
                         </td>                        
                         <td className="py-4 px-6 flex justify-start items-center">
                             <button className="text-blue-500 hover:text-blue-700 transition ease-linear w-8 h-8 rounded flex justify-center items-center">
