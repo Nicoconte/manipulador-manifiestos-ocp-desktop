@@ -3,19 +3,25 @@ import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { GlobalContext, GlobalContextType } from "../../../../../context/GlobalContext";
 import { RepositoryContext, RepositoryContextType } from "../../../../../context/RepositoryContext";
+import { FileSystemOperation } from "../../../../../data/enums/fs.enum";
 import { GitOperation } from "../../../../../data/enums/git.enum";
+import { Application } from "../../../../../data/interfaces/application.interface";
+import { FileSystemArgs } from "../../../../../data/interfaces/fs.interface";
 import { GitCommandArgs } from "../../../../../data/interfaces/git.interface";
+import { getValueByKey } from "../../../../../helpers/object.helper";
+import { useFileSystem } from "../../../../../hooks/useFileSystem";
 import { useGitCommand } from "../../../../../hooks/useGitCommands";
 
 export const CreateForm = () => {
+    const { fs } = useFileSystem();
     const { git } = useGitCommand();
 
-    const { repository, hasError } = useContext(RepositoryContext) as RepositoryContextType;
+    const { repository, hasError, setProjectApplicationsFiltered, projectApplicationsFiltered } = useContext(RepositoryContext) as RepositoryContextType;
     const { handleCloseSideModal, setIsLoading } = useContext(GlobalContext) as GlobalContextType;
 
     const [applications, setApplications] = useState<string[]>([]);
     const [applicationName, setApplicationName] = useState<string>("");
-    const [applicationSelected, setApplicationSelected] = useState<string>("");
+    const [applicationSelected, setApplicationSelected] = useState<string>("main");
 
     useEffect(() => {
         if (repository) {
@@ -24,6 +30,7 @@ export const CreateForm = () => {
     }, [repository])
 
     const handleApplicationSelected = (value: string) => {
+        console.log(value);
         setApplicationSelected(value);
     }
 
@@ -49,35 +56,61 @@ export const CreateForm = () => {
             toast.error("El nombre no puede contener espacios vacios")
             return;
         }
-        
+
         try {
             setIsLoading(true);
-    
+
             if (hasError) {
                 toast.error("El repositorio tiene problemas. Vuelva al menus y vea con detalle que esta pasando.");
                 setIsLoading(false);
                 return;
             }
-    
+
+            console.log("Aplicacion ", applicationName, " basado en ", applicationSelected);
+
             await git(GitOperation.Checkout, {
                 localPath: repository?.fullPath,
-                branch: applicationSelected,
+                branch: applicationSelected
             } as GitCommandArgs);
-    
-                
+
+
             await git(GitOperation.CreateBranch, {
                 localPath: repository?.fullPath,
                 branch: applicationName
-            } as GitCommandArgs)
+            } as GitCommandArgs);
+
+            await git(GitOperation.Push, {
+                localPath: repository?.fullPath,
+                remote: "origin",
+                branch: applicationName
+            } as GitCommandArgs);
+
+            let yaml = await fs(FileSystemOperation.ReadYaml, {
+                path: `${repository?.fullPath}/values.yaml`
+            } as FileSystemArgs);
+
+            let manifest: any = yaml.response;
+
+            let app = {} as Application;
+
+            app.name = applicationName;
+            app.replicas = getValueByKey(manifest, "replicacontroller.replicas");
+            app.isLogging = getValueByKey(manifest, "clusterlogging");
+            app.manifestPath = `${repository?.fullPath}/values.yaml`;
+            app.manifestContent = manifest;
 
             toast.success(`Aplicacion '${applicationName}' creada`);
-    
-        } catch(err) {
+
+
+            projectApplicationsFiltered?.push(app);
+            setProjectApplicationsFiltered(projectApplicationsFiltered!);
+
+        } catch (err) {
             toast.error(`Ups...${err}`)
         }
 
         setIsLoading(false);
-        handleCloseSideModal();        
+        handleCloseSideModal();
     }
 
 
@@ -93,7 +126,7 @@ export const CreateForm = () => {
                     className="w-full h-10 text-md mt-6 rounded-lg appearance-none focus:appearance-none outline-none focus:outline-none placeholder:text-slate-400 px-4 shadow-md"
                     placeholder="Nombre, ej: 'app-test-qa'"
                 />
-                <select onChange={(e) => handleApplicationSelected(e.target.value)} className="text-slate-400 text-md rounded mt-5 h-10 px-4 w-full outline-none focus:outline-none appearance-none shadow-md">
+                <select defaultValue={"main"} onChange={(e) => handleApplicationSelected(e.target.value)} className="text-slate-400 text-md rounded mt-5 h-10 px-4 w-full outline-none focus:outline-none appearance-none shadow-md">
                     {applications.length && applications.map((a, i) => (
                         <option className="text-slate-900" key={i} value={a}>
                             Basado en {a}
@@ -102,16 +135,16 @@ export const CreateForm = () => {
                 </select>
 
                 <span className="mt-7 font-medium">
-                    <span className="font-bold">Referencia</span>: 
+                    <span className="font-bold">Referencia</span>:
                     <span className="text-slate-500 ml-1">
                         Representa la rama del repositorio en donde se almacen los manifiestos.
                     </span>
                 </span>
                 <span className="text-slate-500 font-medium text-left mt-4">
-                    <MinusIcon className="h-4" /> 
-                    <span className="font-bold text-black">Aclaracion:</span> 
+                    <MinusIcon className="h-4" />
+                    <span className="font-bold text-black">Aclaracion:</span>
                     <span className="ml-1">
-                        Las ramas del repositorio deben tener el mismo nombre que la aplicacion publicada. 
+                        Las ramas del repositorio deben tener el mismo nombre que la aplicacion publicada.
                         Recomendados la siguiente convencion '{"{proyecto}-{aplicacion}-{entorno}"}', <br />Ejemplo: notificaciones-backend-qa
                     </span>
                 </span>

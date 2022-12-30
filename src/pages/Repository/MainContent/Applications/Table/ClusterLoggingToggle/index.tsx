@@ -28,6 +28,8 @@ export const ClusterLoggingToggle = ({ app } : ClusterLoggingToggleProps) => {
     }, [checked]);
 
     const handleToggleClusterLogging = async() => {
+        app.isLogging = !app.isLogging; 
+
         toast.info(`${app.isLogging ? "Habilitando" : "Deshabilitando"} Elastic logging`);
         setIsLoading(true);
 
@@ -37,14 +39,12 @@ export const ClusterLoggingToggle = ({ app } : ClusterLoggingToggleProps) => {
         }
 
         try {
+            app.manifestContent.clusterlogging = app.isLogging;
+            
             await git(GitOperation.Checkout, {
                 localPath: repository?.fullPath,
                 branch: app.name
             } as GitCommandArgs);
-    
-            app.isLogging = !app.isLogging; 
-            
-            app.manifestContent.clusterlogging = app.isLogging;
     
             await fs(FileSystemOperation.WriteYaml, {
                 path: app.manifestPath,

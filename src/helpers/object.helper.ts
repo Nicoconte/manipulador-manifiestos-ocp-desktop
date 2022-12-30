@@ -1,4 +1,8 @@
 export function getValueByKey(object: any, path: string) {
+    if (!path.includes(".")) {
+        return object[path];
+    }
+
     path = path.replace(/\[(\w+)\]/g, '.$1'); 
     path = path.replace(/^\./, '');          
  
@@ -16,6 +20,12 @@ export function getValueByKey(object: any, path: string) {
 }
 
 export function setValueByKey(object: any, path: string, value: any) {
+
+    if (!path.includes(".")) {
+        object[path] = value;
+        return;
+    }
+
     path = path.replace(/\[(\w+)\]/g, '.$1'); 
     path = path.replace(/^\./, '');          
 

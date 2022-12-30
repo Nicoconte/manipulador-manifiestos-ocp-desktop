@@ -90,7 +90,7 @@ export const executeGitCommand: { [key: string]: (args: GitCommandArgs) => Promi
                 message: "No se pudo crear la rama nueva: El repositorio local no existe"
             } as GitCommandResponse
         }        
-
+        
         await simpleGit(args.localPath).checkoutLocalBranch(args.branch);
 
         return {
