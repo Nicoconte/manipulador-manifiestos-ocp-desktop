@@ -4,4 +4,5 @@ export interface Application {
     isLogging: boolean,
     manifestPath: string,
     manifestContent: any,
+    isActive: boolean
 }

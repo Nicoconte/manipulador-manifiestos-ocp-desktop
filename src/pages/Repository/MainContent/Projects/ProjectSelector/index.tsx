@@ -97,6 +97,7 @@ export const ProjectSelector = () => {
             branchAsApp.isLogging = getValueByKey(manifest, "clusterlogging");
             branchAsApp.manifestPath = `${repository?.fullPath}/values.yaml`;
             branchAsApp.manifestContent = manifest;
+            branchAsApp.isActive = branchAsApp.replicas > 0;
         }
         
         setProjectApplications(lastestLocalBranches);

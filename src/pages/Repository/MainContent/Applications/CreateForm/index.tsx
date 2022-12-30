@@ -98,6 +98,7 @@ export const CreateForm = () => {
             app.isLogging = getValueByKey(manifest, "clusterlogging");
             app.manifestPath = `${repository?.fullPath}/values.yaml`;
             app.manifestContent = manifest;
+            app.isActive = app.replicas > 0;
 
             toast.success(`Aplicacion '${applicationName}' creada`);
 

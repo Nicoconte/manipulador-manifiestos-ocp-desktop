@@ -23,10 +23,6 @@ export const ClusterLoggingToggle = ({ app } : ClusterLoggingToggleProps) => {
 
     const [checked, setChecked] = useState<boolean>(app.isLogging)
 
-    useEffect(() => {
-        console.log("Value actual ", checked);
-    }, [checked]);
-
     const handleToggleClusterLogging = async() => {
         app.isLogging = !app.isLogging; 
 

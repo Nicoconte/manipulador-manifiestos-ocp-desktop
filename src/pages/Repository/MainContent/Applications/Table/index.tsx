@@ -5,6 +5,7 @@ import { Application } from "../../../../../data/interfaces/application.interfac
 import { ClusterLoggingToggle } from "./ClusterLoggingToggle";
 
 import { uid } from "react-uid";
+import { ReplicaInput } from "./ReplicaInput";
 
 const NoContentTable = () => {
     return (
@@ -49,7 +50,7 @@ const ContentTable = ({ applications }: ContentTableProps) => {
                         Nombre
                     </th>
                     <th scope="col" className="w-2/12 py-3 px-6 sticky top-0 bg-slate-400 dark:bg-cyan-800 text-center">
-                        Logging
+                        Elastic
                     </th>
                     <th scope="col" className="w-2/12 py-3 px-6 sticky top-0 bg-slate-400 dark:bg-cyan-800">
                         Replicas
@@ -72,7 +73,7 @@ const ContentTable = ({ applications }: ContentTableProps) => {
                             <ClusterLoggingToggle key={uid(app)} app={app} />
                         </td>
                         <td className="py-4 px-6">
-                            <input type="number" className="text-center" defaultValue={app.replicas} min="0" max="10" />
+                            <ReplicaInput key={uid(app)} app={app} />
                         </td>                        
                         <td className="py-4 px-6 flex justify-start items-center">
                             <button className="text-blue-500 hover:text-blue-700 transition ease-linear w-8 h-8 rounded flex justify-center items-center">
