@@ -71,11 +71,17 @@ export const ProjectSelector = () => {
 
         for (let branch of allBranches) {
             if (!localBranches.includes(branch.name)) {
+                console.log("Rama ",branch.name);
                 await git(GitOperation.CreateBranch, {
+                    localPath: repository?.fullPath,
+                    branch: branch.name
+                } as GitCommandArgs);
+
+                await git(GitOperation.Pull, {
                     localPath: repository?.fullPath,
                     branch: branch.name,
                     remote: "origin"
-                } as GitCommandArgs)
+                } as GitCommandArgs);
             }
         }
 
@@ -108,10 +114,10 @@ export const ProjectSelector = () => {
 
     return (
         <div className="w-full h-full flex justify-start items-center">
-            <select onChange={(e) => handleProjectSelected(e.target.value)} className ="text-slate-400 text-sm rounded-3xl h-10 px-4 w-full outline-none focus:outline-none appearance-none shadow-md">
+            <select onChange={(e) => handleProjectSelected(e.target.value)} className ="text-slate-400 text-sm rounded-3xl h-10 px-4 w-full outline-none focus:outline-none appearance-none shadow-md dark:bg-cyan-800 dark:text-white dark:placeholder-slate-100 border">
                 <option value={""} selected>Seleccione proyecto</option>
-                { projects.length && projects.map((p, i) => (
-                  <option className="text-slate-900" key={i} defaultValue={p.name}>{p.name}</option>  
+                {projects.length && projects.map((p, i) => (
+                  <option className="text-slate-900 dark:text-slate-50" key={i} defaultValue={p.name}>{p.name}</option>  
                 ))}
             </select>
         </div>

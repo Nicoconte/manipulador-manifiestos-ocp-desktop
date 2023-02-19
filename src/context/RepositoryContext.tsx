@@ -20,7 +20,11 @@ export type RepositoryContextType = {
     projectApplicationsFiltered: Application[] | undefined,
     setProjectApplicationsFiltered: (value: Application[]) => void,
     projects: Project[],
-    setProjects: (value: Project[]) => void
+    setProjects: (value: Project[]) => void,
+    gitRepositories: GitRepository[],
+    setGitRepositories: (value: GitRepository[]) => void,
+    gitRepositoriesFiltered: GitRepository[],
+    setGitRepositoriesFiltered: (value: GitRepository[]) => void,
 }
 
 const RepositoryContext = React.createContext<RepositoryContextType | null>(null);
@@ -30,7 +34,11 @@ const RepositoryProvider: React.FC<React.ReactNode> = ({ children }) => {
 
     const { git } = useGitCommand();
 
+    const [gitRepositories, setGitRepositories] = useState<GitRepository[]>([]);
+    const [gitRepositoriesFiltered, setGitRepositoriesFiltered] = useState<GitRepository[]>([]);
+
     const [repository, setRepository] = useState<GitRepository>();    
+
     const [projects, setProjects] = useState<Project[]>([]);
     const [projectApplications, setProjectApplications] = useState<Application[]>([]);
 
@@ -74,7 +82,11 @@ const RepositoryProvider: React.FC<React.ReactNode> = ({ children }) => {
             projectApplicationsFiltered,
             setProjectApplicationsFiltered,
             projects,
-            setProjects
+            setProjects,
+            gitRepositories,
+            setGitRepositories,
+            gitRepositoriesFiltered,
+            setGitRepositoriesFiltered
         }}>
             {children}
         </RepositoryContext.Provider>

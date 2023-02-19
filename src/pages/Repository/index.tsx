@@ -1,7 +1,8 @@
 import React from "react";
 import { RepositoryProvider } from "../../context/RepositoryContext";
 import { UpperMenu } from "./UpperMenu";
-import { MainContent } from "./MainContent";
+import { RepositoryMainContent } from "./MainContent";
+import { Outlet } from "react-router-dom";
 import { SideModal } from "../../components/SideModal";
 
 export const Repository = () => {
@@ -9,9 +10,10 @@ export const Repository = () => {
         <RepositoryProvider>
             <div className="w-full h-full flex flex-col">
                 <UpperMenu />
-                <MainContent />
+                <RepositoryMainContent />
+                <Outlet />
+                <SideModal />
             </div>
-            <SideModal />
         </RepositoryProvider>
     )
 }

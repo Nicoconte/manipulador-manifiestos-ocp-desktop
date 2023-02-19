@@ -50,19 +50,19 @@ export const CreateForm = () => {
     return (
         <div className="w-full h-full flex flex-col justify-center items-center">
             <div className="w-10/12 h-5/6 mt-6 flex items-center flex-col justify-start">
-                <h1 className="text-2xl font-bold">
+                <h1 className="text-2xl font-bold dark:text-slate-50">
                     Crear proyecto
                 </h1>
                 <input
                     value={projectName}
                     onChange={(e) => onInputChange(e.target.value)}
-                    className="w-full h-10 text-md mt-6 rounded-lg appearance-none focus:appearance-none outline-none focus:outline-none placeholder:text-slate-400 px-4 shadow-md"
+                    className="w-full h-10 text-md mt-6 rounded-lg appearance-none focus:appearance-none outline-none focus:outline-none placeholder:text-slate-400 px-4 shadow-md dark:bg-cyan-800 dark:text-white dark:placeholder-slate-100"
                     placeholder="Nombre, ej: 'proyecto-test-qa'"
                 />
                 <span className="mt-7 font-medium">
-                    <span className="font-bold">Referencia</span>: <span className="text-slate-500">Un proyecto no es mas que un agrupador de aplicaciones.</span>
+                    <span className="font-bold dark:text-slate-50">Referencia:</span> <span className="text-slate-500 dark:text-slate-200">Un proyecto no es mas que un agrupador de aplicaciones.</span>
                 </span>
-                <span className="text-slate-500 font-medium text-left mt-4">
+                <span className="text-slate-500 dark:text-slate-200 font-medium text-left mt-4">
                     <MinusIcon className="h-4" /> Ejemplo, el proyecto "test" agrupara todas las aplicaciones que contenga "test" en el nombre
                 </span>
             </div>

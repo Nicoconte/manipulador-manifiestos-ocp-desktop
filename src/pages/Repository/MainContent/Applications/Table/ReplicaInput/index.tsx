@@ -93,15 +93,15 @@ export const ReplicaInput = ({ app }: ReplicaInputProps) => {
     return (
         <div className="w-full h-10 bg-slate-300 rounded">
             <div className="w-full h-full flex flex-row justify-center items-center">
-                <button onClick={() => handleReplicaChanges(InputActions.Decrement)} className="w-4/12 h-full flex justify-center items-center transition ease-linear hover:bg-slate-200">
+                <button onClick={() => handleReplicaChanges(InputActions.Decrement)} className="w-4/12 h-full flex justify-center items-center transition ease-linear hover:bg-slate-200 dark:bg-cyan-500 dark:text-slate-600">
                     <MinusIcon className="h-5" />
                 </button>
-                <div className="w-4/12 h-full flex justify-center items-center">
+                <div className="w-4/12 h-full flex justify-center items-center dark:bg-cyan-500 dark:text-slate-600">
                     <span className="text-md font-medium">
                         {replicas}
                     </span>
                 </div>
-                <button onClick={() => handleReplicaChanges(InputActions.Increment)} className="w-4/12 h-full flex justify-center items-center transition ease-linear hover:bg-slate-200">
+                <button onClick={() => handleReplicaChanges(InputActions.Increment)} className="w-4/12 h-full flex justify-center items-center transition ease-linear hover:bg-slate-200 dark:bg-cyan-500 dark:text-slate-600">
                     <PlusIcon className="h-5" />
                 </button>
             </div>

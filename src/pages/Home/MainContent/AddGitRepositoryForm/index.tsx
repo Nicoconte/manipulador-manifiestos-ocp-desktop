@@ -1,34 +1,30 @@
 import { PlusIcon } from "@heroicons/react/24/outline"
 import React, { useEffect, useState, useContext } from "react"
 import { toast } from "react-toastify"
-import { GitRepositoryService } from "../../../api/services/gitRepository.service"
-import { GlobalContext, GlobalContextType } from "../../../context/GlobalContext"
-import { SettingContext, SettingContextType } from "../../../context/SettingContext"
-import { GitOperation } from "../../../data/enums/git.enum"
-import { GitCommandArgs } from "../../../data/interfaces/git.interface"
-import { GitRepository } from "../../../data/interfaces/gitRepository.interface"
-import { parseGithubUrl } from "../../../helpers/git.helper"
-import { getPocketbaseErrorMessage } from "../../../helpers/pocketbase.helper"
-import { ToastWrapper } from "../../../helpers/toast.helper"
-import { useGitCommand } from "../../../hooks/useGitCommands"
+import { GitRepositoryService } from "../../../../api/services/gitRepository.service"
+import { GlobalContext, GlobalContextType } from "../../../../context/GlobalContext"
+import { HomeContext, HomeContextType } from "../../../../context/HomeContext"
+import { SettingContext, SettingContextType } from "../../../../context/SettingContext"
+import { GitOperation } from "../../../../data/enums/git.enum"
+import { GitCommandArgs } from "../../../../data/interfaces/git.interface"
+import { parseGithubUrl } from "../../../../helpers/git.helper"
+import { getPocketbaseErrorMessage } from "../../../../helpers/pocketbase.helper"
+import { ToastWrapper } from "../../../../helpers/toast.helper"
+import { useGitCommand } from "../../../../hooks/useGitCommands"
 
 
-type AddGitRepositoryFormProps = {
-    setOpenModal: (value:boolean) => void,
-    gitRepositories: GitRepository[],
-    setGitRepositories: (value: GitRepository[]) => void
-};
-
-export const AddGitRepositoryForm = ({ setOpenModal, gitRepositories, setGitRepositories }: AddGitRepositoryFormProps) => {    
+export const AddGitRepositoryForm = () => {    
     const { git } = useGitCommand();
-    const [githubUrl, setGithubUrl] = useState<string>("")
+    const [githubUrl, setGithubUrl] = useState<string>("");
 
-    const { setIsLoading } = useContext(GlobalContext) as GlobalContextType;
+    const { setIsLoading, handleCloseSideModal } = useContext(GlobalContext) as GlobalContextType;
     const { globalSetting } = useContext(SettingContext) as SettingContextType;
+
+    const { gitRepositories, setGitRepositories, setGitRepositoriesFiltered } = useContext(HomeContext) as HomeContextType;
 
     const handleSubmit = async () => {
         if (!githubUrl || githubUrl === "") {
-            toast.error("Debe introducir la url")
+            toast.error("Debe introducir la url");
             return;
         }
 
@@ -50,20 +46,21 @@ export const AddGitRepositoryForm = ({ setOpenModal, gitRepositories, setGitRepo
         GitRepositoryService.create(githubUrl).then(repo => {
             toast.success("Repositorio guardado");
 
-            let currRepositories = [...gitRepositories];
-
-            currRepositories.unshift(repo);
-
-            setGitRepositories(currRepositories);
-
             git(GitOperation.Clone, {
                 localPath: globalSetting!.local_path_to_repositories.concat("/", repo.name),
                 githubUrl: githubUrl
             } as GitCommandArgs).then(res => {
                 ToastWrapper.git(res);
-                
+
+                let currRepositories = [...gitRepositories];
+
+                currRepositories.unshift(repo);
+    
+                setGitRepositories(currRepositories);
+                setGitRepositoriesFiltered(currRepositories);                
+                                
                 setIsLoading(false);
-                setOpenModal(false);                
+                handleCloseSideModal();                
             });
         })
         .catch(err => {

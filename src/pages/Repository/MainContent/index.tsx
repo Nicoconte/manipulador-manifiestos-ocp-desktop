@@ -5,7 +5,7 @@ import { SearchForm } from "./Applications/SearchForm";
 import { Table } from "./Applications/Table";
 import { ProjectSelector } from "./Projects/ProjectSelector";
 
-export const MainContent = () => {
+export const RepositoryMainContent = () => {
     const { handleOpenSideModal } = useContext(GlobalContext) as GlobalContextType;
 
     return (

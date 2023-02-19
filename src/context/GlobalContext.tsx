@@ -6,7 +6,7 @@ export type GlobalContextType = {
     openSideModal: boolean,
     sideModalChild: string,
     handleOpenSideModal: (childName: string) => void,
-    handleCloseSideModal: () => void,
+    handleCloseSideModal: () => void, 
 }
 
 const GlobalContext = React.createContext<GlobalContextType | null>(null);
@@ -18,6 +18,7 @@ const GlobalProvider: React.FC<React.ReactNode> = ({ children }) => {
     const [sideModalChild, setSideModalChild] = useState<string>("");
 
     const handleOpenSideModal = (childName: string) => { 
+        console.log(childName);
         setSideModalChild(childName);
         setOpenSideModal(true);
     }

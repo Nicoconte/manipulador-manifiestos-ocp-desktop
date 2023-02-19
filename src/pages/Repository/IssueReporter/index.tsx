@@ -13,7 +13,7 @@ const IssueReporterErrorItems = ({ item }: IssueReporterErrorItemsProps) => {
      const titles: any = {
         "Conflicto": "Hay conflicto en los archivos mencionados.",
         "Modificado": "Los archivos fueron modificados externamente.\nAñada los archivos y realice un commit",
-        "No añadido": "Debe utilizar añadir los archivos modificados."
+        "No añadido": "Debe añadir los archivos modificados."
      }
 
     return (
@@ -28,7 +28,7 @@ const IssueReporterErrorItems = ({ item }: IssueReporterErrorItemsProps) => {
                 </thead>
                 <tbody>
                     {item.files.map((f, i) =>
-                        <tr key={i} className="bg-white border-bdark:bg-cyan-800">
+                        <tr key={i} className="bg-white border-b dark:bg-cyan-800">
                             <td className="py-4 px-6 w-full flex justify-start items-center">
                                 {f}
                             </td>
@@ -45,8 +45,8 @@ export const IssueReporter = () => {
 
     return (
         <div className="w-full h-full">
-            <div className="w-full h-full flex justify-center items-start overflow-y-scroll">
-                {!hasError && <h1 className="mt-6 font-medium">No se detectaron problemas en el repositorio</h1>}
+            <div className="w-full h-full flex flex-col justify-start items-center overflow-y-scroll">
+                {!hasError && <h1 className="mt-6 font-medium dark:text-slate-50">No se detectaron problemas en el repositorio</h1>}
                 {hasError &&
                     errorMessages.map((i, index) => (
                         <IssueReporterErrorItems key={index} item={i} />

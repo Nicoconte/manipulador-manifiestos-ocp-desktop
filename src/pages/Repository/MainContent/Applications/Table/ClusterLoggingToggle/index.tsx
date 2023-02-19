@@ -26,7 +26,7 @@ export const ClusterLoggingToggle = ({ app } : ClusterLoggingToggleProps) => {
     const handleToggleClusterLogging = async() => {
         app.isLogging = !app.isLogging; 
 
-        toast.info(`${app.isLogging ? "Habilitando" : "Deshabilitando"} Elastic logging`);
+        toast.info(`${app.isLogging ? "Habilitando" : "Deshabilitando"} Cluster logging`);
         setIsLoading(true);
 
         if (hasError) {
@@ -56,7 +56,7 @@ export const ClusterLoggingToggle = ({ app } : ClusterLoggingToggleProps) => {
             await git(GitOperation.Commit, {
                 localPath: repository?.fullPath,
                 branch: app.name,
-                message: `Elastic ${app.isLogging ? "habilitado" : "deshabilitado"} (clusterlogging)`
+                message: `Cluster logging ${app.isLogging ? "habilitado" : "deshabilitado"}`
             } as GitCommandArgs);
     
             await git(GitOperation.Push, {

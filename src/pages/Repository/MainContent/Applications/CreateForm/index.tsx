@@ -118,33 +118,33 @@ export const CreateForm = () => {
     return (
         <div className="w-full h-full flex flex-col justify-center items-center">
             <div className="w-10/12 h-5/6 mt-6 flex items-center flex-col justify-start">
-                <h1 className="text-2xl font-bold">
+                <h1 className="text-2xl font-bold dark:text-slate-50">
                     Crear aplicacion
                 </h1>
                 <input
                     value={applicationName}
                     onChange={(e) => onInputChange(e.target.value)}
-                    className="w-full h-10 text-md mt-6 rounded-lg appearance-none focus:appearance-none outline-none focus:outline-none placeholder:text-slate-400 px-4 shadow-md"
+                    className="w-full h-10 text-md mt-6 rounded-lg appearance-none focus:appearance-none outline-none focus:outline-none placeholder:text-slate-400 dark:bg-cyan-800 dark:text-white dark:placeholder-slate-100 px-4 shadow-md"
                     placeholder="Nombre, ej: 'app-test-qa'"
                 />
-                <select defaultValue={"main"} onChange={(e) => handleApplicationSelected(e.target.value)} className="text-slate-400 text-md rounded mt-5 h-10 px-4 w-full outline-none focus:outline-none appearance-none shadow-md">
+                <select defaultValue={"main"} onChange={(e) => handleApplicationSelected(e.target.value)} className="dark:bg-cyan-800 dark:text-white dark:placeholder-slate-100 text-slate-400 text-md rounded mt-5 h-10 px-4 w-full outline-none focus:outline-none appearance-none shadow-md">
                     {applications.length && applications.map((a, i) => (
-                        <option className="text-slate-900" key={i} value={a}>
+                        <option className="text-slate-900 dark:text-slate-50" key={i} value={a}>
                             Basado en {a}
                         </option>
                     ))}
                 </select>
 
                 <span className="mt-7 font-medium">
-                    <span className="font-bold">Referencia</span>:
-                    <span className="text-slate-500 ml-1">
+                    <span className="font-bold dark:text-slate-50">Referencia:</span>
+                    <span className="text-slate-500 dark:text-slate-200 ml-1">
                         Representa la rama del repositorio en donde se almacen los manifiestos.
                     </span>
                 </span>
                 <span className="text-slate-500 font-medium text-left mt-4">
                     <MinusIcon className="h-4" />
-                    <span className="font-bold text-black">Aclaracion:</span>
-                    <span className="ml-1">
+                    <span className="font-bold text-black dark:text-slate-50">Aclaracion:</span>
+                    <span className="ml-1 dark:text-slate-200">
                         Las ramas del repositorio deben tener el mismo nombre que la aplicacion publicada.
                         Recomendados la siguiente convencion '{"{proyecto}-{aplicacion}-{entorno}"}', <br />Ejemplo: notificaciones-backend-qa
                     </span>

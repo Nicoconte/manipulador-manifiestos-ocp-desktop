@@ -1,11 +1,8 @@
-import React, { useEffect, useRef, useState } from "react"
+import React, { useContext, useEffect, useRef, useState } from "react"
+import { HomeContext, HomeContextType } from "../../../../context/HomeContext";
+import { RepositoryContext, RepositoryContextType } from "../../../../context/RepositoryContext";
 
-import { GitRepository } from "../../../data/interfaces/gitRepository.interface"
-
-type FilterGitRepositoriesFormProps = {
-    gitRepositories: GitRepository[],
-    setRepositoriesFiltered: (values: GitRepository[]) => void
-}
+import { GitRepository } from "../../../../data/interfaces/gitRepository.interface"
 
 
 const FilterFunctions: { [key: string]: (filterValue: string, repositories: GitRepository[]) => GitRepository[] } = {
@@ -17,12 +14,11 @@ const FilterFunctions: { [key: string]: (filterValue: string, repositories: GitR
     }
 }
 
-export const FilterGitRepositoriesForm = ({ 
-    gitRepositories, 
-    setRepositoriesFiltered
-}: FilterGitRepositoriesFormProps) => {
+export const FilterGitRepositoriesForm = () => {
     const [title, setTitle] = useState<string>(""); 
     const [hasError, setHasError] = useState<boolean>(false);
+
+    const { gitRepositories, setGitRepositoriesFiltered  } = useContext(HomeContext) as HomeContextType;
 
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -34,7 +30,7 @@ export const FilterGitRepositoriesForm = ({
         if (inputRef.current?.value === "") {
             setTitle("");
             setHasError(false);
-            setRepositoriesFiltered(gitRepositories);
+            setGitRepositoriesFiltered(gitRepositories);
             return;
        }
 
@@ -53,7 +49,7 @@ export const FilterGitRepositoriesForm = ({
         }
 
         const result = FilterFunctions[filterType](name, gitRepositories);
-        setRepositoriesFiltered(result);
+        setGitRepositoriesFiltered(result);
         
         setTitle("");
         setHasError(false);

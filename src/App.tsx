@@ -9,15 +9,18 @@ import { router } from "./Router";
 import { MainLayout } from './components/layout';
 import { SettingProvider } from './context/SettingContext';
 import { GlobalProvider } from './context/GlobalContext';
+import { HomeProvider } from './context/HomeContext';
 
 function App() {
   return (
     <div className="w-full h-screen">
       <GlobalProvider>
         <SettingProvider>
-          <MainLayout>
-            <RouterProvider router={router} />
-          </MainLayout>
+          <HomeProvider>
+            <MainLayout>
+              <RouterProvider router={router} />
+            </MainLayout>
+          </HomeProvider>
         </SettingProvider>
       </GlobalProvider>
     </div>
